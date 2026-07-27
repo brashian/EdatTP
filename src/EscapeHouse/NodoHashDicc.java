@@ -1,3 +1,5 @@
+package EscapeHouse;
+
 public class NodoHashDicc {
     private Object clave;
     private Object dato;

@@ -1,3 +1,5 @@
+package EscapeHouse;
+
 public class Diccionario {
 
     private static final int TAM = 13;
@@ -83,11 +85,6 @@ public class Diccionario {
         }
         return dato;
     }
-
-    // No quedarian ordenados los listar, creo que si es requisito, habria que
-    // buscar la manera de
-    // insertar manteniendo el orden o extraer todo y ordenar al final (Estilo
-    // QuickSort/MergeSort)
 
     public Lista listarClaves() {
         Lista lista = new Lista();

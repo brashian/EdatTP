@@ -276,7 +276,7 @@ public class Plano {
      * (por niveles), la primera vez que se llega es siempre por
      * el camino más corto posible.
      */
-    private void caminoMasCortoAux(NodoHabitacion origen, Object destino,Lista visitados, Lista padres) {
+    private void caminoMasCortoAux(NodoHabitacion origen, Object destino, Lista visitados, Lista padres) {
         Cola cola = new Cola();
         boolean encontrado = false;
         visitados.insertar(origen.getCodigo(), 1);
@@ -305,7 +305,7 @@ public class Plano {
         }
     }
 
-    private Lista reconstruirCamino(Object origen, Object destino,Lista visitados, Lista padres) {
+    private Lista reconstruirCamino(Object origen, Object destino, Lista visitados, Lista padres) {
         Lista camino = new Lista();
         Object actual = destino;
         boolean seguir = true;
@@ -333,7 +333,7 @@ public class Plano {
             Lista padres = new Lista();
             caminoMasCortoAux(habOrigen, destino, visitados, padres);
             if (visitados.localizar(destino) >= 0) {
-                camino = reconstruirCamino(origen, destino,visitados, padres);
+                camino = reconstruirCamino(origen, destino, visitados, padres);
             }
         }
 
@@ -354,15 +354,16 @@ public class Plano {
             Lista visitados = new Lista();
             Lista caminoActual = new Lista();
 
-            caminoMasLargoAux(habOrigen, habDestino,visitados, caminoActual, camino);
+            caminoMasLargoAux(habOrigen, habDestino, visitados, caminoActual, camino);
         }
 
         return camino;
     }
 
-    private void caminoMasLargoAux(NodoHabitacion actual,NodoHabitacion destino,Lista visitados,Lista caminoActual,Lista caminoMasLargo) {
-        visitados.insertar(actual.getCodigo(),visitados.longitud() + 1);
-        caminoActual.insertar(actual.getCodigo(),caminoActual.longitud() + 1);
+    private void caminoMasLargoAux(NodoHabitacion actual, NodoHabitacion destino, Lista visitados, Lista caminoActual,
+            Lista caminoMasLargo) {
+        visitados.insertar(actual.getCodigo(), visitados.longitud() + 1);
+        caminoActual.insertar(actual.getCodigo(), caminoActual.longitud() + 1);
         if (actual == destino) {
             if (caminoActual.longitud() > caminoMasLargo.longitud()) {
                 caminoMasLargo.vaciar();
@@ -376,7 +377,8 @@ public class Plano {
             NodoConexion conexion = actual.getPrimeraConexion();
             while (conexion != null) {
                 if (visitados.localizar(conexion.getHabitacionDestino().getCodigo()) < 0) {
-                    caminoMasLargoAux(conexion.getHabitacionDestino(),destino,visitados,caminoActual,caminoMasLargo);
+                    caminoMasLargoAux(conexion.getHabitacionDestino(), destino, visitados, caminoActual,
+                            caminoMasLargo);
                 }
                 conexion = conexion.getSigConexion();
             }
@@ -393,7 +395,7 @@ public class Plano {
             NodoHabitacion auxOriginal = this.primeraHabitacion;
             NodoHabitacion ultimaClon = null;
             while (auxOriginal != null) {
-                NodoHabitacion nueva = new NodoHabitacion(auxOriginal.getCodigo(),null);
+                NodoHabitacion nueva = new NodoHabitacion(auxOriginal.getCodigo(), null);
 
                 if (clon.primeraHabitacion == null) {
                     clon.primeraHabitacion = nueva;
@@ -415,7 +417,7 @@ public class Plano {
                 NodoConexion ultimaConexion = null;
                 while (conexionOriginal != null) {
                     NodoHabitacion destino = clon.ubicarHabitacion(conexionOriginal.getHabitacionDestino().getCodigo());
-                    NodoConexion nuevaConexion = new NodoConexion(destino,conexionOriginal.getPuntajeMinimo(),null);
+                    NodoConexion nuevaConexion = new NodoConexion(destino, conexionOriginal.getPuntajeMinimo(), null);
 
                     if (auxClon.getPrimeraConexion() == null) {
                         auxClon.setPrimeraConexion(nuevaConexion);
@@ -442,10 +444,11 @@ public class Plano {
             s += "Habitación: " + aux.getCodigo();
             NodoConexion conexion = aux.getPrimeraConexion();
             if (conexion != null) {
-                s += " --> Conectada con: "+ conexion.getHabitacionDestino().getCodigo()+ " (" + conexion.getPuntajeMinimo() + ")";
+                s += " --> Conectada con: " + conexion.getHabitacionDestino().getCodigo() + " ("
+                        + conexion.getPuntajeMinimo() + ")";
                 conexion = conexion.getSigConexion();
                 while (conexion != null) {
-                    s += ", "+ conexion.getHabitacionDestino().getCodigo()+ " (" + conexion.getPuntajeMinimo() + ")";
+                    s += ", " + conexion.getHabitacionDestino().getCodigo() + " (" + conexion.getPuntajeMinimo() + ")";
                     conexion = conexion.getSigConexion();
                 }
             }
@@ -454,6 +457,72 @@ public class Plano {
         }
 
         return s;
+    }
+
+    // habitacionesContiguas: Dado un código de habitación, mostrar las habitaciones
+    // contiguas a las que se puede acceder, y qué puntaje se necesitaría para pasar
+    // a cada una
+
+    public String habitacionesContiguas(String codigoHab) {
+        String s = "";
+        NodoHabitacion hab = this.ubicarHabitacion(codigoHab);
+
+        if (hab != null) {
+            s = "Habitaciones contiguas a la habitación " + codigoHab + ":\n";
+
+            NodoConexion aux = hab.getPrimeraConexion();
+
+            while (aux != null) {
+                s += "- Habitación " + aux.getHabitacionDestino().getCodigo() + " (puntaje mínimo: "
+                        + aux.getPuntajeMinimo() + ")\n";
+                aux = aux.getSigConexion();
+            }
+        } else {
+            s = "Habitación inexistente.";
+        }
+
+        return s;
+    }
+
+    // esPosibleLlegar: Dados los códigos de hab1 y hab2, y un valor k, mostrar si
+    // es o no posible llegar de hab1 a hab2, acumulando k puntos
+
+    public boolean esPosibleLlegar(Object origen, Object destino, int k) {
+        boolean exito = false;
+        NodoHabitacion[] encontrados = buscarHabitaciones(origen, destino);
+        NodoHabitacion auxO = encontrados[0];
+        NodoHabitacion auxD = encontrados[1];
+
+        if (auxO != null && auxD != null) {
+            // si ambos vertices existen busca si existe camino entre ambos
+            Lista visitados = new Lista();
+            exito = esPosibleLlegarAux(auxO, destino, visitados, 0, k);
+        }
+        return exito;
+    }
+
+    private boolean esPosibleLlegarAux(NodoHabitacion n, Object dest, Lista vis, int puntajeAcumulado, int k) {
+        boolean exito = false;
+        if (n != null) {
+            // si vertice n es el destino: HAY CAMINO!
+            if (n.getCodigo().equals(dest)) {
+                exito = true;
+            } else {
+                // si no es el destino verifica si hay camino entre n y destino
+                vis.insertar(n.getCodigo(), vis.longitud() + 1);
+                NodoConexion ady = n.getPrimeraConexion();
+                while (!exito && ady != null) {
+                    if (vis.localizar(ady.getHabitacionDestino().getCodigo()) < 0) {
+                        int nuevoPuntaje = puntajeAcumulado + ady.getPuntajeMinimo();
+                        if (nuevoPuntaje <= k) {
+                            exito = esPosibleLlegarAux(ady.getHabitacionDestino(), dest, vis, nuevoPuntaje, k);
+                        }
+                    }
+                    ady = ady.getSigConexion();
+                }
+            }
+        }
+        return exito;
     }
 
 }

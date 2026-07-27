@@ -254,4 +254,49 @@ public class ArbolAVL {
         }
         return elem;
     }
+
+    // en vez de volver boolean como el pertence, devuelve el elemento, necesario
+    // para el sistema.
+    public Comparable obtenerDato(Comparable elem) {
+        Comparable dato = null;
+        if (this.raiz != null) {
+            dato = obtenerDatoAux(this.raiz, elem);
+        }
+        return dato;
+    }
+
+    private Comparable obtenerDatoAux(NodoAVL n, Comparable elem) {
+        Comparable dato = null;
+        int cmp = elem.compareTo(n.getElem());
+        if (cmp == 0) {
+            dato = n.getElem();
+        } else if (cmp < 0) {
+            if (n.getIzquierdo() != null) {
+                dato = obtenerDatoAux(n.getIzquierdo(), elem);
+            }
+        } else {
+            if (n.getDerecho() != null) {
+                dato = obtenerDatoAux(n.getDerecho(), elem);
+            }
+        }
+
+        return dato;
+    }
+
+    public String toString() {
+        return toStringAux(this.raiz, 0);
+    }
+
+    private String toStringAux(NodoAVL n, int nivel) {
+        String s = "";
+        if (n != null) {
+            s += toStringAux(n.getDerecho(), nivel + 1);
+            for (int i = 0; i < nivel; i++) {
+                s += "    ";
+            }
+            s += n.getElem() + " (altura=" + n.getAltura() + ")\n";
+            s += toStringAux(n.getIzquierdo(), nivel + 1);
+        }
+        return s;
+    }
 }

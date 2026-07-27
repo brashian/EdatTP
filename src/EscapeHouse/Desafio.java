@@ -11,12 +11,14 @@ public class Desafio implements Comparable {
         this.tipo = tipo;
     }
 
-    public int getPuntaje() {
-        return puntaje;
+    public Desafio(int puntaje) {
+        this.puntaje = puntaje;
+        this.nombre = "";
+        this.tipo = "";
     }
 
-    public void setPuntaje(int puntaje) {
-        this.puntaje = puntaje;
+    public int getPuntaje() {
+        return puntaje;
     }
 
     public String getNombre() {

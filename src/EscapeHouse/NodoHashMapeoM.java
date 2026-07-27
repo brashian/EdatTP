@@ -1,3 +1,5 @@
+package EscapeHouse;
+
 public class NodoHashMapeoM {
     private Object dominio;
     private Lista rango;

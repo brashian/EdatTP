@@ -1,39 +1,39 @@
 package EscapeHouse;
 
 public class Habitacion implements Comparable {
-    private Object codigo;
+    private String codigo;
     private String nombre;
     private int planta;
     private double metrosCuadrados;
     private boolean tieneSalida;
+    private boolean esEntrada; // para saber si es de entrada por que "Para las
+    // habitaciones solo se pueden agregar intermedias,
+    // las habitaciones de entrada y salida no cambian."?
     private ArbolAVL desafios;
 
-    public Habitacion(Object codigo, String nombre, int planta, double metrosCuadrados, boolean tieneSalida) {
+    public Habitacion(String codigo, String nombre, int planta, double metrosCuadrados, boolean tieneSalida,
+            boolean esEntrada) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.planta = planta;
         this.metrosCuadrados = metrosCuadrados;
         this.tieneSalida = tieneSalida;
+        this.esEntrada = esEntrada;
         this.desafios = new ArbolAVL();
     }
 
-    // constructor "liviano", solo para buscar por codigo (compareTo solo mira
-    // codigo)
-    public Habitacion(Object codigo) {
+    public Habitacion(String codigo) {
         this.codigo = codigo;
         this.nombre = "";
         this.planta = 0;
         this.metrosCuadrados = 0;
         this.tieneSalida = false;
+        this.esEntrada = false;
         this.desafios = new ArbolAVL();
     }
 
-    public Object getCodigo() {
+    public String getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(Object codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -60,12 +60,8 @@ public class Habitacion implements Comparable {
         this.metrosCuadrados = metrosCuadrados;
     }
 
-    public boolean getTieneSalida() {
+    public boolean tieneSalida() {
         return tieneSalida;
-    }
-
-    public void setTieneSalida(boolean tieneSalida) {
-        this.tieneSalida = tieneSalida;
     }
 
     public ArbolAVL getDesafios() {
@@ -76,7 +72,32 @@ public class Habitacion implements Comparable {
         this.desafios = desafios;
     }
 
-    public int compareTo(Object o) {
-        return this.codigo.toString().compareTo(((Habitacion) o).codigo.toString());
+    public boolean esEntrada() {
+        return esEntrada;
     }
+
+    public boolean esIntermedia() {
+        return !this.esEntrada && !this.tieneSalida;
+    }
+
+    public int compareTo(Object o) {
+        return this.codigo.compareTo(((Habitacion) o).getCodigo());
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+
+        s += "Código: " + this.codigo + "\n";
+        s += "Nombre: " + this.nombre + "\n";
+        s += "Planta: " + this.planta + "\n";
+        s += "Metros cuadrados: " + this.metrosCuadrados + "\n";
+        s += "Entrada: " + this.esEntrada + "\n";
+        s += "Salida: " + this.tieneSalida + "\n";
+        s += "Desafíos:\n";
+        s += desafios.listar();
+
+        return s;
+    }
+
 }

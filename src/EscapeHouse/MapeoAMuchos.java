@@ -1,5 +1,7 @@
+package EscapeHouse;
+
 public class MapeoAMuchos {
-    private static final int TAM = 13; // primo, mismo criterio que usamos en TablaHashAbierto
+    private static final int TAM = 13;
 
     private NodoHashMapeoM[] tabla;
     private int cant = 0; //cantidad de dominios
