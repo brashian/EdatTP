@@ -644,4 +644,33 @@ public class Plano {
         }
     }
 
+    private boolean esAdyacenteAux(NodoHabitacion habitacion, NodoHabitacion buscada, int[] puntaje) {
+        NodoConexion conexion = habitacion.getPrimeraConexion();
+        boolean encontrada = false;
+        while (!encontrada && conexion != null) {
+            encontrada = conexion.getHabitacionDestino() == buscada;
+            if (!encontrada) {
+                conexion = conexion.getSigConexion();
+            } else{
+                puntaje[0]=conexion.getPuntajeMinimo();
+            }
+        }
+        return encontrada;
+    }
+
+    public boolean esAdyacente(Object codigoOrigen, Object codigoDestino, int[] puntaje) {
+        boolean existe;
+        NodoHabitacion[] encontrados = buscarHabitaciones(codigoOrigen, codigoDestino);
+        NodoHabitacion origen = encontrados[0];
+        NodoHabitacion destino = encontrados[1];
+
+        if (origen != null && destino != null) {
+            existe = esAdyacenteAux(origen, destino, puntaje);
+        } else {
+            existe = false;
+        }
+
+        return existe;
+    }
+
 }

@@ -299,4 +299,24 @@ public class ArbolAVL {
         }
         return s;
     }
+
+    public Lista listarMayorIgualQue(Comparable minimo) {
+        Lista lis = new Lista();
+        listarMayorIgualQueAux(this.raiz, minimo, lis);
+        return lis;
+    }
+
+    private void listarMayorIgualQueAux(NodoAVL n, Comparable minimo, Lista lis) {
+        if (n != null) {
+            int cmp = n.getElem().compareTo(minimo);
+
+            if (cmp >= 0) {
+                listarMayorIgualQueAux(n.getIzquierdo(), minimo, lis);
+                lis.insertar(n.getElem(), lis.longitud() + 1);
+                listarMayorIgualQueAux(n.getDerecho(), minimo, lis);
+            } else {
+                listarMayorIgualQueAux(n.getDerecho(), minimo, lis);
+            }
+        }
+    }
 }

@@ -307,6 +307,9 @@ public class SistemaEscapeHouse {
                     s += "Desafío (puntaje " + elem.getPuntaje() + "):\n" + elem.toString() + "\n";
                 }
             }
+            if (s.equals("")) {
+                s = "No existen desafíos de ese tipo en ese rango.";
+            }
         } else {
             s = "La habitación no existe.";
         }
@@ -368,15 +371,44 @@ public class SistemaEscapeHouse {
      * 
      */
     public String posiblesDesafios(String nombreE, String habDest) {
-        String resultado = "No existe el equipo";
+        String s;
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreE);
 
         if (eq != null) {
-            String habAct = (String) eq.getHabitacionActual();
+            String habAct = eq.getHabitacionActual();
+            int[] puntajeRequerido = { 0 };
+            boolean esAdyacente = this.plano.esAdyacente(habAct, habDest, puntajeRequerido);
+            if (esAdyacente) {
+                int puntajeAcumulado = eq.getPuntajeHabitacion();
+                int faltante = puntajeRequerido[0] - puntajeAcumulado;
+                Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habDest));
+                if (hab != null) {
+                    if (faltante > 0) {
+                        Lista desafios = hab.getDesafios().listarMayorIgualQue(new Desafio(faltante));
+                        if (desafios.esVacia()) {
+                            s = "No hay desafios que el equipo podria resolver para pasar a  hab resolviendo uno solo";
+                        } else {
+                            s = desafios.toString();
+                        }
+                    } else {
+                        s = "Es posible acceder a " + habDest
+                                + " sin resolver ningun desafio, o podria resolver cualquiera de la lista:\n "
+                                + hab.getDesafios().listar();
+                    }
+                } else {
+                    s = "La habitacion destino no existe";
+                }
 
+            } else {
+                s = "La habitacion " + habDest + " no es adyacente a la habitacion " + habAct
+                        + " donde esta ubicado el equipo " + nombreE;
+            }
+
+        } else {
+            s = "No existe el equipo";
         }
 
-        return resultado;
+        return s;
     }
 
     /*
@@ -415,6 +447,66 @@ public class SistemaEscapeHouse {
             }
         }
 
+        return exito;
+    }
+
+    /*
+     * cambiarDeHabitacion: Dado un equipo eq y una habitación hab, verificar si es
+     * posible que
+     * el equipo eq pase a la habitación hab (considerando si es contigua a la
+     * actual y el puntaje
+     * acumulado en dicha habitación es suficiente) y en caso afirmativo actualizar
+     * los datos del
+     * equipo apropiadamente.
+     */
+
+    public boolean cambiarDeHabitacion(String nombreEquipo, String habDestino) {
+        boolean exito = false;
+        Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
+
+        if (eq != null) {
+            String habAct = eq.getHabitacionActual();
+            int[] puntajeRequerido = { 0 };
+            boolean esAdyacente = this.plano.esAdyacente(habAct, habDestino, puntajeRequerido);
+            if (esAdyacente) {
+                int puntajeAcumulado = eq.getPuntajeHabitacion();
+                int faltante = puntajeRequerido[0] - puntajeAcumulado;
+                if (faltante <= 0) {
+                    eq.setHabitacionActual(habDestino);
+                    eq.setPuntajeHabitacion(0);
+                    exito = true;
+
+                }
+
+            }
+        }
+
+        return exito;
+    }
+
+    /*
+     * puedeSalir: Dado el nombre del equipo participante, decir si puede o no salir
+     * del juego en
+     * base al puntaje acumulado, al puntaje que debe obtener para ganar el juego y
+     * si la
+     * habitación en la que se encuentra tiene o no salida al exterior
+     */
+
+    public boolean puedeSalir(String nombreEquipo) {
+        boolean exito = false;
+        Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
+        if (eq != null) {
+            String habAct = eq.getHabitacionActual();
+            Habitacion habitacion = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
+            if (habitacion != null) {
+                if (habitacion.tieneSalida()) {
+                    if (eq.getPuntajeNecesario() <= eq.getPuntajeTotal()) {
+                        exito=true;
+                    }
+                }
+            }
+
+        }
         return exito;
     }
 
