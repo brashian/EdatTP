@@ -33,62 +33,51 @@ public class SistemaEscapeHouse {
         return this.desafiosResueltos;
     }
 
-
-
-
-    //carga de datos
-   public void cargarDatosDesdeArchivo(String rutaArchivo) {
+    // carga de datos
+    public void cargarDatosDesdeArchivo(String rutaArchivo) {
         System.out.println("Cargando datos desde: " + rutaArchivo + "...");
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
-            
+
             while ((linea = br.readLine()) != null) {
-              
 
                 // para separar
-                // si viene  H ; codigo ; nombre ; planta ; m2 ; tieneSalida 
+                // si viene H ; codigo ; nombre ; planta ; m2 ; tieneSalida
                 String[] datos = linea.split(";");
                 String tipo = datos[0];
 
                 switch (tipo) {
-                    case "H": 
-                        Habitacion hab = new Habitacion(datos[1].trim(), datos[2].trim(), 
-                                Integer.parseInt(datos[3].trim()), Double.parseDouble(datos[4].trim()), 
+                    case "H":
+                        Habitacion hab = new Habitacion(datos[1].trim(), datos[2].trim(),
+                                Integer.parseInt(datos[3].trim()), Double.parseDouble(datos[4].trim()),
                                 Boolean.parseBoolean(datos[5].trim()));
                         this.altaHabitacion(hab);
                         break;
 
-                    case "P": 
+                    case "P":
                         this.altaPuerta(datos[1].trim(), datos[2].trim(), Integer.parseInt(datos[3].trim()));
                         break;
 
-                    case "D": 
+                    case "D":
                         Desafio des = new Desafio(Integer.parseInt(datos[1].trim()), datos[3].trim(), datos[4].trim());
                         this.altaDesafio(datos[2].trim(), des);
                         break;
 
-                    case "E": 
-                        Equipo eq = new Equipo(datos[1].trim(), Integer.parseInt(datos[2].trim()), 
-                                Integer.parseInt(datos[3].trim()), datos[4].trim(), 
+                    case "E":
+                        Equipo eq = new Equipo(datos[1].trim(), Integer.parseInt(datos[2].trim()),
+                                Integer.parseInt(datos[3].trim()), datos[4].trim(),
                                 Integer.parseInt(datos[5].trim()));
                         this.altaEquipo(eq);
                         break;
                 }
             }
             System.out.println("¡Datos cargados con éxito!");
-            
+
         } catch (Exception e) {
             System.out.println("Ocurrió un error al leer el archivo de texto: " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
 
     // METODOS SOBRE HABITACIONES
 
@@ -149,13 +138,39 @@ public class SistemaEscapeHouse {
 
     public String esPosibleLlegar(String hab1, String hab2, int k) {
         String s;
-        boolean exito = this.plano.esPosibleLlegar(hab1, hab2, k); // quizas en vez de boolean que retorne String con
-                                                                   // los pasos mas la conclusion "mostrar si es o no
-                                                                   // posible"
+        boolean exito = this.plano.esPosibleLlegar(hab1, hab2, k);
         if (exito) {
             s = "Si es posible";
         } else {
             s = "No es posible";
+        }
+        return s;
+    }
+
+    public String minimoPuntaje(String hab1, String hab2) {
+        String s;
+        int[] puntaje = { 0 };
+        Lista caminoMinimo = this.plano.minimoPuntaje(hab1, hab2, puntaje);
+
+        if (!caminoMinimo.esVacia()) {
+            s = "Para llegar de " + hab1 + " a " + hab2 + " con " + puntaje[0]
+                    + " puntos, debería hacer el camino: " + caminoMinimo.toString();
+        } else {
+            s = "La/s habitación/es no existe/n o no hay camino posible";
+        }
+        return s;
+    }
+
+    public String sinPasarPor(String hab1, String hab2, String prohibido, int p) {
+        String s = "";
+        Lista caminos = this.plano.sinPasarPor(hab1, hab2, prohibido, p);
+        if (caminos.esVacia()) {
+            s = "No existen caminos entre las habitaciones que cumplan las condiciones.";
+        } else {
+            int longitud = caminos.longitud();
+            for (int i = 1; i <= longitud; i++) {
+                s += "Camino " + i + ": " + ((Lista) caminos.recuperar(i)) + "\n";
+            }
         }
         return s;
     }
@@ -226,13 +241,11 @@ public class SistemaEscapeHouse {
         return exito;
     }
 
-}
+    // puerta - conexion del plano
 
-// puerta - conexion del plano
-
-public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
+    public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
         // entro exito
-        // la vuelta exito 2 
+        // la vuelta exito 2
         boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
         boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
         return exito1 && exito2;
@@ -244,57 +257,54 @@ public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExi
         return exito1 || exito2;
     }
 
+    // 5.Consultas sobre equipos participantes:
 
+    // mostrarInfoEquipo: Dado el nombre del equipo, mostrar todos sus datos.
+    public String mostrarInfoEquipo(String nombre) {
+        String info = "";
+        // obt info de diccionario
+        Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombre);
+        if (unEquipo != null) {
+            info = unEquipo.toString();
+        } else {
+            info = " Equipo no encontrado";
+        }
 
-//5.Consultas sobre equipos participantes:
-
-
-
-//mostrarInfoEquipo: Dado el nombre del equipo, mostrar todos sus datos.
-public String mostrarInfoEquipo (String nombre){
-    String info = "";
-    //obt info de diccionario
-    Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombre);
-    if(unEquipo!=null){
-        info= unEquipo.toString();
-    }else{
-        info=" Equipo no encontrado";
+        return info;
     }
-
-    return info;
-}
-/*
-posiblesDesafios: Dado un equipo y una habitación hab, en caso en que hab sea
-adyacente al lugar donde esté ubicado el equipo, mostrar todos los desafíos que podría
-resolver el equipo para pasar a hab resolviendo un solo desafío. En caso en que hab no sea
-adyacente, mostrar un mensaje aclaratorio.
-
-*/
-public String posiblesDesafios(String nombreE, String habDest) {
-    String resultado = "No existe el equipo";
-    Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombreE);
-
-    if(eq!=null){
-        String habAct = (String) unEquipo.getHabitacionActual();
-        
-    }
-
-
-    return resultado;
-    }
-
 
     /*
-    
-    
-    jugarDesafío: Dado un equipo, una habitación y un desafío, marcar el desafío como ganado
-y actualizar los datos del equipo apropiadamente.
+     * posiblesDesafios: Dado un equipo y una habitación hab, en caso en que hab sea
+     * adyacente al lugar donde esté ubicado el equipo, mostrar todos los desafíos
+     * que podría
+     * resolver el equipo para pasar a hab resolviendo un solo desafío. En caso en
+     * que hab no sea
+     * adyacente, mostrar un mensaje aclaratorio.
+     * 
+     */
+    public String posiblesDesafios(String nombreE, String habDest) {
+        String resultado = "No existe el equipo";
+        Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreE);
 
-    */
+        if (eq != null) {
+            String habAct = (String) eq.getHabitacionActual();
+
+        }
+
+        return resultado;
+    }
+
+    /*
+     * 
+     * 
+     * jugarDesafío: Dado un equipo, una habitación y un desafío, marcar el desafío
+     * como ganado
+     * y actualizar los datos del equipo apropiadamente.
+     * 
+     */
     public boolean jugarDesafio(String nombreEquipo, String codHabitacion, int puntajeDesafio) {
         boolean exito = false;
 
-        
         Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
         Habitacion habitacion = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
 
@@ -302,17 +312,15 @@ y actualizar los datos del equipo apropiadamente.
         boolean estaEnLaHabitacionCorrecta = existenDatos && unEquipo.getHabitacionActual().equals(codHabitacion);
 
         if (estaEnLaHabitacionCorrecta) {
-            
+
             Desafio Aux = new Desafio(puntajeDesafio, "", "");
             Desafio desafioActual = (Desafio) habitacion.getDesafios().obtenerDato(Aux);
-            
-            
 
             if (desafioActual != null) {
-                
-                String idDesafio = codHabitacion  +"y"+ puntajeDesafio;
+
+                String idDesafio = codHabitacion + "y" + puntajeDesafio;
                 boolean esPrimerIntento = this.desafiosResueltos.asociar(nombreEquipo, idDesafio);
-                
+
                 // Si el Hash asocia entonces puntaje al equipo
                 if (esPrimerIntento) {
                     unEquipo.setPuntajeTotal(unEquipo.getPuntajeTotal() + puntajeDesafio);
@@ -321,22 +329,21 @@ y actualizar los datos del equipo apropiadamente.
                 }
             }
         }
-        
+
         return exito;
     }
 
-// 6. Mostrar sistema
+    // 6. Mostrar sistema
 
-public String mostrarSistema(){
+    public String mostrarSistema() {
 
-    String sistema = "";
+        String sistema = "";
 
-        sistema = "Plano (grafo)" + this.plano.toString()+ "\n"+
-                    "Habitaciones (avl) "+ this.habitaciones.toString() + "\n"+
-                    "Equipos (diccionario/ cambiar nombre) "+ this.equipos.toString() + "\n"+
-                    "Desafios resueltos (mapeo a muchos) cambiar name " + this.desafiosResueltos.toString();
+        sistema = "Plano (grafo)" + this.plano.toString() + "\n" +
+                "Habitaciones (avl) " + this.habitaciones.toString() + "\n" +
+                "Equipos (diccionario/ cambiar nombre) " + this.equipos.toString() + "\n" +
+                "Desafios resueltos (mapeo a muchos) cambiar name " + this.desafiosResueltos.toString();
 
-
-
-    return sistema; 
+        return sistema;
+    }
 }

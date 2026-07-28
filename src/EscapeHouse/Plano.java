@@ -494,35 +494,154 @@ public class Plano {
         NodoHabitacion auxD = encontrados[1];
 
         if (auxO != null && auxD != null) {
-            // si ambos vertices existen busca si existe camino entre ambos
             Lista visitados = new Lista();
-            exito = esPosibleLlegarAux(auxO, destino, visitados, 0, k);
+            Lista mejorCosto = new Lista();
+            exito = esPosibleLlegarAux(auxO, destino, visitados, mejorCosto, 0, k);
         }
         return exito;
     }
 
-    private boolean esPosibleLlegarAux(NodoHabitacion n, Object dest, Lista vis, int puntajeAcumulado, int k) {
+    private boolean esPosibleLlegarAux(NodoHabitacion n, Object dest, Lista vis, Lista mejorCosto,
+            int puntajeAcumulado, int k) {
         boolean exito = false;
         if (n != null) {
-            // si vertice n es el destino: HAY CAMINO!
             if (n.getCodigo().equals(dest)) {
                 exito = true;
             } else {
-                // si no es el destino verifica si hay camino entre n y destino
-                vis.insertar(n.getCodigo(), vis.longitud() + 1);
+                int pos = vis.localizar(n.getCodigo());
+                if (pos < 0) {
+                    vis.insertar(n.getCodigo(), vis.longitud() + 1);
+                    mejorCosto.insertar(puntajeAcumulado, mejorCosto.longitud() + 1);
+                } else {
+                    mejorCosto.eliminar(pos);
+                    mejorCosto.insertar(puntajeAcumulado, pos);
+                }
+
                 NodoConexion ady = n.getPrimeraConexion();
                 while (!exito && ady != null) {
-                    if (vis.localizar(ady.getHabitacionDestino().getCodigo()) < 0) {
-                        int nuevoPuntaje = puntajeAcumulado + ady.getPuntajeMinimo();
-                        if (nuevoPuntaje <= k) {
-                            exito = esPosibleLlegarAux(ady.getHabitacionDestino(), dest, vis, nuevoPuntaje, k);
-                        }
+                    Object codigoDestino = ady.getHabitacionDestino().getCodigo();
+                    int posDestino = vis.localizar(codigoDestino);
+                    int nuevoPuntaje = puntajeAcumulado + ady.getPuntajeMinimo();
+                    boolean valeLaPena = (posDestino < 0)
+                            || (nuevoPuntaje < (Integer) mejorCosto.recuperar(posDestino));
+
+                    if (valeLaPena && nuevoPuntaje <= k) {
+                        exito = esPosibleLlegarAux(ady.getHabitacionDestino(), dest, vis, mejorCosto,
+                                nuevoPuntaje, k);
                     }
                     ady = ady.getSigConexion();
                 }
             }
         }
         return exito;
+    }
+
+    // minimoPuntaje: Dados dos códigos de habitación, mostrar el mínimo puntaje
+    // que debería acumular para ir de hab1 a hab2 y cuál es el camino.
+
+    // minimoPuntaje: Dados dos códigos de habitación, mostrar el mínimo puntaje
+    // que debería acumular para ir de hab1 a hab2 y cuál es el camino.
+
+    public Lista minimoPuntaje(Object origen, Object destino, int[] puntajeResultado) {
+        Lista resultado = new Lista();
+        NodoHabitacion[] encontrados = buscarHabitaciones(origen, destino);
+        NodoHabitacion auxO = encontrados[0];
+        NodoHabitacion auxD = encontrados[1];
+
+        if (auxO != null && auxD != null) {
+            Lista visitados = new Lista();
+            Lista[] mejorCamino = { new Lista() };
+            int[] mejorPuntaje = { Integer.MAX_VALUE }; // lo utilizo para que el primer camino encontrado sea guardado
+                                                        // como el mejor.
+
+            minimoPuntajeAux(auxO, destino, visitados, mejorCamino, 0, mejorPuntaje);
+
+            resultado = mejorCamino[0];
+            puntajeResultado[0] = mejorPuntaje[0];
+        }
+
+        return resultado;
+    }
+
+    private void minimoPuntajeAux(NodoHabitacion n, Object destino, Lista visitados, Lista[] mejorCamino,
+            int puntajeActual, int[] mejorPuntaje) {
+
+        if (n != null) {
+            visitados.insertar(n.getCodigo(), visitados.longitud() + 1);
+            if (n.getCodigo().equals(destino)) {
+
+                if (puntajeActual < mejorPuntaje[0]) {
+                    mejorPuntaje[0] = puntajeActual;
+                    mejorCamino[0] = visitados.clone();
+                }
+
+            } else {
+                NodoConexion ady = n.getPrimeraConexion();
+                while (ady != null) {
+                    if (visitados.localizar(ady.getHabitacionDestino().getCodigo()) < 0) {
+                        int nuevoPuntaje = puntajeActual + ady.getPuntajeMinimo();
+                        boolean valeLaPena = nuevoPuntaje < mejorPuntaje[0];
+
+                        if (valeLaPena) {
+                            minimoPuntajeAux(ady.getHabitacionDestino(), destino, visitados, mejorCamino, nuevoPuntaje,
+                                    mejorPuntaje);
+                        }
+                    }
+
+                    ady = ady.getSigConexion();
+                }
+            }
+
+            visitados.eliminar(visitados.longitud());
+        }
+    }
+
+    /*
+     * sinPasarPor: Dados tres códigos de habitación y un valor numérico P, mostrar
+     * todas las
+     * formas de llegar desde hab1 a hab2 sin pasar por la tercera habitación (hab3)
+     * que no
+     * requieran ganar más de P puntos.
+     */
+
+    public Lista sinPasarPor(Object origen, Object destino, Object prohibido, int P) {
+        Lista lis = new Lista();
+        NodoHabitacion[] encontrados = buscarHabitaciones(origen, destino);
+        NodoHabitacion auxO = encontrados[0];
+        NodoHabitacion auxD = encontrados[1];
+
+        if (auxO != null && auxD != null && ubicarHabitacion(prohibido) != null) {
+            Lista visitados = new Lista();
+            sinPasarPorAux(auxO, destino, prohibido, visitados, lis, P, 0);
+        }
+
+        return lis;
+    }
+
+    private void sinPasarPorAux(NodoHabitacion n, Object dest, Object prohibido, Lista visitados, Lista lis, int P,
+            int puntajeActual) {
+        if (n != null) {
+            visitados.insertar(n.getCodigo(), visitados.longitud() + 1);
+
+            if (n.getCodigo().equals(dest)) {
+                lis.insertar(visitados.clone(), lis.longitud() + 1);
+            } else {
+                NodoConexion ady = n.getPrimeraConexion();
+
+                while (ady != null) {
+                    Object codigoDestino = ady.getHabitacionDestino().getCodigo();
+                    if (!codigoDestino.equals(prohibido) && visitados.localizar(codigoDestino) < 0) {
+                        int nuevoPuntaje = puntajeActual + ady.getPuntajeMinimo();
+                        if (nuevoPuntaje <= P) {
+                            sinPasarPorAux(ady.getHabitacionDestino(), dest, prohibido, visitados, lis, P,
+                                    nuevoPuntaje);
+                        }
+                    }
+                    ady = ady.getSigConexion();
+                }
+            }
+            visitados.eliminar(visitados.longitud());
+        }
     }
 
 }
