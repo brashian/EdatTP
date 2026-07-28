@@ -40,4 +40,16 @@ public class Desafio implements Comparable {
     public int compareTo(Object o) {
         return this.puntaje - ((Desafio) o).puntaje;
     }
+
+    @Override
+    public String toString() {
+        String s = "";
+
+        s += "Puntaje: " + this.puntaje + "\n";
+        s += "Nombre: " + this.nombre + "\n";
+        s += "Tipo: " + this.tipo + "\n";
+
+        return s;
+    }
+
 }

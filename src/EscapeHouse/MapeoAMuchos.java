@@ -180,7 +180,7 @@ public class MapeoAMuchos {
             NodoHashMapeoM aux = this.tabla[i];
 
             while (aux != null) {
-                s += aux.getDominio() + " --> " + aux.getRango() + "\n";
+                s += "(" + aux.getDominio() + "," + aux.getRango() + ")\n";
                 aux = aux.getEnlace();
             }
         }

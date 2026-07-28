@@ -177,6 +177,7 @@ public class SistemaEscapeHouse {
 
     // METODOS SOBRE DESAFÍOS
 
+    // ABM
     public boolean altaDesafio(String codigoHabitacion, Desafio desafio) {
         boolean exito = false;
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
@@ -213,8 +214,108 @@ public class SistemaEscapeHouse {
         return exito;
     }
 
+    // Consultas
+
+    /*
+     * mostrarDesafío: Dado un código de desafío y un número de habitación,
+     * mostrar toda su información.
+     */
+
+    public String mostrarDesafio(int codigoDesafio, String codigoHabitacion) {
+        String s;
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        if (hab != null) {
+            Desafio des = (Desafio) hab.getDesafios().obtenerDato(new Desafio(codigoDesafio));
+            if (des != null) {
+                s = des.toString();
+            } else {
+                s = "La habitación existe, pero el desafío no.";
+            }
+        } else {
+            s = "La habitación no existe.";
+        }
+        return s;
+    }
+
+    /*
+     * mostrarDesafíosResueltos: Dado un equipo eq, mostrar todos los desafíos que
+     * ya resolvieron
+     */
+
+    public String mostrarDesafiosResueltos(String nombreEquipo) {
+        String s = "El equipo no existe.";
+        Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
+        if (eq != null) {
+            Lista desafiosResueltos = this.desafiosResueltos.obtenerValores(nombreEquipo);
+            if (desafiosResueltos.esVacia()) {
+                s = "Sin desafíos resueltos.";
+            } else {
+                s = desafiosResueltos.toString();
+            }
+        }
+
+        return s;
+    }
+
+    /*
+     * verificarDesafíoResuelto: Dado un equipo, un desafío y una habitación,
+     * indicar si el equipo ya lo resolvió
+     */
+
+    public String verificarDesafioResuelto(String nombreEquipo, String codigoHabitacion, int puntajeDesafio) {
+        String s = "El equipo, la habitación o el desafío no existen.";
+
+        Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+
+        if (eq != null && hab != null) {
+            Desafio des = (Desafio) hab.getDesafios().obtenerDato(new Desafio(puntajeDesafio));
+
+            if (des != null) {
+                Lista desafios = this.desafiosResueltos.obtenerValores(nombreEquipo);
+                String idDesafio = "(" + codigoHabitacion + "," + puntajeDesafio + ")";
+
+                if (desafios.localizar(idDesafio) != -1) {
+                    s = "El equipo " + nombreEquipo + " sí resolvió el desafío " + des.getNombre()
+                            + " en la habitación " + codigoHabitacion + ".";
+                } else {
+                    s = "El equipo no resolvió ese desafío.";
+                }
+            }
+        }
+
+        return s;
+    }
+
+    /*
+     * mostrarDesafíosTipo: Dada una habitación, dos puntajes a y b y un tipo de
+     * desafío X, mostrar todos los desafíos de la habitación que sean de tipo X con
+     * puntaje en
+     * el rango [a, b] (por ejemplo, listar todos los desafíos de tipo lógico con
+     * puntaje entre 30 y 55)
+     */
+
+    public String mostrarDesafiosTipo(String codHabitacion, int puntajeA, int puntajeB, String tipoDesafio) {
+        String s = "";
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
+        if (hab != null) {
+            Lista desafiosEnRango = hab.getDesafios().listarRango(new Desafio(puntajeA), new Desafio(puntajeB));
+            int longitud = desafiosEnRango.longitud();
+            for (int i = 1; i <= longitud; i++) {
+                Desafio elem = (Desafio) desafiosEnRango.recuperar(i);
+                if (elem.getTipo().equals(tipoDesafio)) {
+                    s += "Desafío (puntaje " + elem.getPuntaje() + "):\n" + elem.toString() + "\n";
+                }
+            }
+        } else {
+            s = "La habitación no existe.";
+        }
+        return s;
+    }
+
     // METODOS SOBRE EQUIPOS
 
+    // ABM
     public boolean altaEquipo(Equipo equipo) {
         boolean exito = false;
         exito = this.equipos.insertar(equipo.getNombre(), equipo);
@@ -241,23 +342,7 @@ public class SistemaEscapeHouse {
         return exito;
     }
 
-    // puerta - conexion del plano
-
-    public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
-        // entro exito
-        // la vuelta exito 2
-        boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
-        boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
-        return exito1 && exito2;
-    }
-
-    public boolean bajaPuerta(String habitacion1, String habitacion2) {
-        boolean exito1 = this.plano.eliminarConexion(habitacion1, habitacion2);
-        boolean exito2 = this.plano.eliminarConexion(habitacion2, habitacion1);
-        return exito1 || exito2;
-    }
-
-    // 5.Consultas sobre equipos participantes:
+    // Consultas:
 
     // mostrarInfoEquipo: Dado el nombre del equipo, mostrar todos sus datos.
     public String mostrarInfoEquipo(String nombre) {
@@ -313,12 +398,12 @@ public class SistemaEscapeHouse {
 
         if (estaEnLaHabitacionCorrecta) {
 
-            Desafio Aux = new Desafio(puntajeDesafio, "", "");
+            Desafio Aux = new Desafio(puntajeDesafio);
             Desafio desafioActual = (Desafio) habitacion.getDesafios().obtenerDato(Aux);
 
             if (desafioActual != null) {
 
-                String idDesafio = codHabitacion + "y" + puntajeDesafio;
+                String idDesafio = "(" + codHabitacion + "," + puntajeDesafio + ")";
                 boolean esPrimerIntento = this.desafiosResueltos.asociar(nombreEquipo, idDesafio);
 
                 // Si el Hash asocia entonces puntaje al equipo
@@ -339,11 +424,27 @@ public class SistemaEscapeHouse {
 
         String sistema = "";
 
-        sistema = "Plano (grafo)" + this.plano.toString() + "\n" +
-                "Habitaciones (avl) " + this.habitaciones.toString() + "\n" +
-                "Equipos (diccionario/ cambiar nombre) " + this.equipos.toString() + "\n" +
-                "Desafios resueltos (mapeo a muchos) cambiar name " + this.desafiosResueltos.toString();
+        sistema = "Plano (grafo): " + this.plano.toString() + "\n" +
+                "Habitaciones (avl): " + this.habitaciones.toString() + "\n" +
+                "Equipos (diccionario): " + this.equipos.toString() + "\n" +
+                "Desafios resueltos (mapeo a muchos): " + this.desafiosResueltos.toString();
 
         return sistema;
+    }
+
+    // puerta - conexion del plano
+
+    public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
+        // entro exito
+        // la vuelta exito 2
+        boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
+        boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
+        return exito1 && exito2;
+    }
+
+    public boolean bajaPuerta(String habitacion1, String habitacion2) {
+        boolean exito1 = this.plano.eliminarConexion(habitacion1, habitacion2);
+        boolean exito2 = this.plano.eliminarConexion(habitacion2, habitacion1);
+        return exito1 || exito2;
     }
 }

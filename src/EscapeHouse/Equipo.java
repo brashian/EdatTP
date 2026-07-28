@@ -67,13 +67,6 @@ public class Equipo {
                "Puntos sala: "+this.puntajeHabitacion+ "\n"+
                "Total : " + this.puntajeTotal + "\n"+
                "necesario pts: " + this.puntajeNecesario ;
-        
-        
-        
-        
-        
-        
-       
     }
 
 
