@@ -60,4 +60,21 @@ public class Equipo {
         this.puntajeHabitacion = puntajeHabitacion;
     }
 
+
+    public String toString(){
+        return "Equipo: "+ this.nombre + "\n"+
+               "Habitacion actual: "+this.habitacionActual + "\n"+
+               "Puntos sala: "+this.puntajeHabitacion+ "\n"+
+               "Total : " + this.puntajeTotal + "\n"+
+               "necesario pts: " + this.puntajeNecesario ;
+        
+        
+        
+        
+        
+        
+       
+    }
+
+
 }

@@ -246,8 +246,84 @@ public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExi
 
 
 
+//5.Consultas sobre equipos participantes:
 
 
+
+//mostrarInfoEquipo: Dado el nombre del equipo, mostrar todos sus datos.
+public String mostrarInfoEquipo (String nombre){
+    String info = "";
+    //obt info de diccionario
+    Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombre);
+    if(unEquipo!=null){
+        info= unEquipo.toString();
+    }else{
+        info=" Equipo no encontrado";
+    }
+
+    return info;
+}
+/*
+posiblesDesafios: Dado un equipo y una habitación hab, en caso en que hab sea
+adyacente al lugar donde esté ubicado el equipo, mostrar todos los desafíos que podría
+resolver el equipo para pasar a hab resolviendo un solo desafío. En caso en que hab no sea
+adyacente, mostrar un mensaje aclaratorio.
+
+*/
+public String posiblesDesafios(String nombreE, String habDest) {
+    String resultado = "No existe el equipo";
+    Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombreE);
+
+    if(eq!=null){
+        String habAct = (String) unEquipo.getHabitacionActual();
+        
+    }
+
+
+    return resultado;
+    }
+
+
+    /*
+    
+    
+    jugarDesafío: Dado un equipo, una habitación y un desafío, marcar el desafío como ganado
+y actualizar los datos del equipo apropiadamente.
+
+    */
+    public boolean jugarDesafio(String nombreEquipo, String codHabitacion, int puntajeDesafio) {
+        boolean exito = false;
+
+        
+        Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
+        Habitacion habitacion = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
+
+        boolean existenDatos = (unEquipo != null && habitacion != null);
+        boolean estaEnLaHabitacionCorrecta = existenDatos && unEquipo.getHabitacionActual().equals(codHabitacion);
+
+        if (estaEnLaHabitacionCorrecta) {
+            
+            Desafio Aux = new Desafio(puntajeDesafio, "", "");
+            Desafio desafioActual = (Desafio) habitacion.getDesafios().obtenerDato(Aux);
+            
+            
+
+            if (desafioActual != null) {
+                
+                String idDesafio = codHabitacion  +"y"+ puntajeDesafio;
+                boolean esPrimerIntento = this.desafiosResueltos.asociar(nombreEquipo, idDesafio);
+                
+                // Si el Hash asocia entonces puntaje al equipo
+                if (esPrimerIntento) {
+                    unEquipo.setPuntajeTotal(unEquipo.getPuntajeTotal() + puntajeDesafio);
+                    unEquipo.setPuntajeHabitacion(unEquipo.getPuntajeHabitacion() + puntajeDesafio);
+                    exito = true;
+                }
+            }
+        }
+        
+        return exito;
+    }
 
 // 6. Mostrar sistema
 
