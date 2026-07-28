@@ -1,5 +1,8 @@
 package EscapeHouse;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class SistemaEscapeHouse {
 
     private Plano plano;
@@ -29,6 +32,63 @@ public class SistemaEscapeHouse {
     public MapeoAMuchos getDesafiosResueltos() {
         return this.desafiosResueltos;
     }
+
+
+
+
+    //carga de datos
+   public void cargarDatosDesdeArchivo(String rutaArchivo) {
+        System.out.println("Cargando datos desde: " + rutaArchivo + "...");
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+            String linea;
+            
+            while ((linea = br.readLine()) != null) {
+              
+
+                // para separar
+                // si viene  H ; codigo ; nombre ; planta ; m2 ; tieneSalida 
+                String[] datos = linea.split(";");
+                String tipo = datos[0];
+
+                switch (tipo) {
+                    case "H": 
+                        Habitacion hab = new Habitacion(datos[1].trim(), datos[2].trim(), 
+                                Integer.parseInt(datos[3].trim()), Double.parseDouble(datos[4].trim()), 
+                                Boolean.parseBoolean(datos[5].trim()));
+                        this.altaHabitacion(hab);
+                        break;
+
+                    case "P": 
+                        this.altaPuerta(datos[1].trim(), datos[2].trim(), Integer.parseInt(datos[3].trim()));
+                        break;
+
+                    case "D": 
+                        Desafio des = new Desafio(Integer.parseInt(datos[1].trim()), datos[3].trim(), datos[4].trim());
+                        this.altaDesafio(datos[2].trim(), des);
+                        break;
+
+                    case "E": 
+                        Equipo eq = new Equipo(datos[1].trim(), Integer.parseInt(datos[2].trim()), 
+                                Integer.parseInt(datos[3].trim()), datos[4].trim(), 
+                                Integer.parseInt(datos[5].trim()));
+                        this.altaEquipo(eq);
+                        break;
+                }
+            }
+            System.out.println("¡Datos cargados con éxito!");
+            
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al leer el archivo de texto: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+
 
     // METODOS SOBRE HABITACIONES
 
@@ -166,4 +226,41 @@ public class SistemaEscapeHouse {
         return exito;
     }
 
+}
+
+// puerta - conexion del plano
+
+public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
+        // entro exito
+        // la vuelta exito 2 
+        boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
+        boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
+        return exito1 && exito2;
+    }
+
+    public boolean bajaPuerta(String habitacion1, String habitacion2) {
+        boolean exito1 = this.plano.eliminarConexion(habitacion1, habitacion2);
+        boolean exito2 = this.plano.eliminarConexion(habitacion2, habitacion1);
+        return exito1 || exito2;
+    }
+
+
+
+
+
+
+// 6. Mostrar sistema
+
+public String mostrarSistema(){
+
+    String sistema = "";
+
+        sistema = "Plano (grafo)" + this.plano.toString()+ "\n"+
+                    "Habitaciones (avl) "+ this.habitaciones.toString() + "\n"+
+                    "Equipos (diccionario/ cambiar nombre) "+ this.equipos.toString() + "\n"+
+                    "Desafios resueltos (mapeo a muchos) cambiar name " + this.desafiosResueltos.toString();
+
+
+
+    return sistema; 
 }

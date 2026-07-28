@@ -25,7 +25,7 @@ public class Main {
             switch (opcion) {
                 case 1:
                    
-                    sistema.cargarDesdeArchivo("datianos/cargadatos.txt");
+                    sistema.cargarDatosDesdeArchivo("datianos/cargadatos.txt");
                     break;
                 case 6:
                     sistema.mostrarSistema();
