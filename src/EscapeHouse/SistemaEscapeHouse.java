@@ -97,6 +97,13 @@ public class SistemaEscapeHouse {
     etc), y el estado del sistema completo al momento de terminar de ejecutarse.
 
     */
+   public void crearLog(){
+    try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, false))) {
+            out.println("Log Creado");
+        } catch (IOException e) {
+            System.out.println("Error al crear el log.");
+        }
+   }
     public void escribirLog(String msj){
         try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, true))) {
             out.println(msj);
@@ -213,6 +220,7 @@ public class SistemaEscapeHouse {
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().insertar(desafio);
+            escribirLog("Se creo desafio ");
         }
         return exito;
     }
@@ -222,6 +230,8 @@ public class SistemaEscapeHouse {
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().eliminar(new Desafio(puntaje));
+            escribirLog("Se elimino desafio");
+
         }
         return exito;
     }
@@ -352,12 +362,14 @@ public class SistemaEscapeHouse {
     public boolean altaEquipo(Equipo equipo) {
         boolean exito = false;
         exito = this.equipos.insertar(equipo.getNombre(), equipo);
+        escribirLog("Se a creado un equipo "+equipo.getNombre());
         return exito;
     }
 
     public boolean bajaEquipo(String nombreEquipo) {
         boolean exito = false;
         exito = this.equipos.eliminar(nombreEquipo);
+        escribirLog("Elimine el equipo "+nombreEquipo);
         return exito;
     }
 
@@ -561,12 +573,14 @@ public class SistemaEscapeHouse {
         // la vuelta exito 2
         boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
         boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
+        escribirLog("Se paso de puerta ");
         return exito1 && exito2;
     }
 
     public boolean bajaPuerta(String habitacion1, String habitacion2) {
         boolean exito1 = this.plano.eliminarConexion(habitacion1, habitacion2);
         boolean exito2 = this.plano.eliminarConexion(habitacion2, habitacion1);
+        escribirLog("se elimino puerta");
         return exito1 || exito2;
     }
 }
