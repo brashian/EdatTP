@@ -2,6 +2,9 @@ package EscapeHouse;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SistemaEscapeHouse {
 
@@ -9,6 +12,7 @@ public class SistemaEscapeHouse {
     private ArbolAVL habitaciones;
     private Diccionario equipos;
     private MapeoAMuchos desafiosResueltos;
+    private String rutaLog = "datianos/log.txt";
 
     public SistemaEscapeHouse() {
         this.plano = new Plano();
@@ -35,7 +39,8 @@ public class SistemaEscapeHouse {
 
     // carga de datos
     public void cargarDatosDesdeArchivo(String rutaArchivo) {
-        System.out.println("Cargando datos desde: " + rutaArchivo + "...");
+        //banderita
+        System.out.println("Cargando datos desde: " + rutaArchivo );
 
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
@@ -72,10 +77,31 @@ public class SistemaEscapeHouse {
                         break;
                 }
             }
-            System.out.println("¡Datos cargados con éxito!");
+            System.out.println("Datos cargados");
+
+            //carga log al terminar la carga
+            escribirLog("Sistema recien cargado");
+            escribirLog(this.mostrarSistema());
 
         } catch (Exception e) {
-            System.out.println("Ocurrió un error al leer el archivo de texto: " + e.getMessage());
+            System.out.println("error al leer " + e.getMessage());
+        }
+    }
+
+
+    //metodo archivo log prueba
+    /*
+    Utilizar un archivo de log (archivo de texto) para guardar la siguiente información: estado
+        del sistema al momento de terminar la carga inicial, anotar qué operaciones de Altas y Bajas
+    se realizan a lo largo de la ejecución (Ej: “Se crea la habitación 01”, “Se borró el desafío D1”,
+    etc), y el estado del sistema completo al momento de terminar de ejecutarse.
+
+    */
+    public void escribirLog(String msj){
+        try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, true))) {
+            out.println(msj);
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el log.");
         }
     }
 
@@ -88,6 +114,8 @@ public class SistemaEscapeHouse {
             exito = this.habitaciones.insertar(hab);
             if (exito) {
                 this.plano.insertarHabitacion(hab.getCodigo());
+                //escribir en el log
+                escribirLog("se creo habitacion nro:" + hab.getCodigo());
             }
         }
         return exito;
@@ -100,6 +128,8 @@ public class SistemaEscapeHouse {
             exito = this.habitaciones.eliminar(hab);
             if (exito) {
                 this.plano.eliminarHabitacion(hab.getCodigo());
+                                escribirLog("se borro habitacion nro:" + codigo);
+
             }
         }
 
