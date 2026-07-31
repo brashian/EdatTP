@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.lineales;
 
 public class Cola {
     private Nodo frente;

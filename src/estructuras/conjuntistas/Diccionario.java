@@ -1,4 +1,5 @@
-package EscapeHouse;
+package estructuras.conjuntistas;
+import estructuras.lineales.Lista;
 
 public class Diccionario {
 

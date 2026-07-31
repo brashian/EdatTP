@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.grafos;
 public class NodoHabitacion {
 
     private Object codigo;

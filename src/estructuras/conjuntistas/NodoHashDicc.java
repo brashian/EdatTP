@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.conjuntistas;
 
 public class NodoHashDicc {
     private Object clave;

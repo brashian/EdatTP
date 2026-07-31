@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.lineales;
 
 public class Lista {
     private Nodo cabecera;

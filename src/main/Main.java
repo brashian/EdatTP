@@ -1,5 +1,6 @@
-package EscapeHouse;
+package main;
 
+import EscapeHouse.SistemaEscapeHouse;
 import java.util.Scanner;
 
 public class Main {
