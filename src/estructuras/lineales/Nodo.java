@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.lineales;
 
 public class Nodo {
     private Object elem;
