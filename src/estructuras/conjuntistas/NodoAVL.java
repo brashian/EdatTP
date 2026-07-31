@@ -1,4 +1,4 @@
-package EscapeHouse;
+package estructuras.conjuntistas;
 
 public class NodoAVL {
     private Comparable elem;

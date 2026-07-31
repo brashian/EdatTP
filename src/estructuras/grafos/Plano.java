@@ -1,4 +1,6 @@
-package EscapeHouse;
+package estructuras.grafos;
+import estructuras.lineales.*;
+
 
 public class Plano {
 

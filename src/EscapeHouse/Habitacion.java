@@ -1,4 +1,5 @@
 package EscapeHouse;
+
 import estructuras.conjuntistas.ArbolAVL;
 
 public class Habitacion implements Comparable {
