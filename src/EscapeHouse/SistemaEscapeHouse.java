@@ -44,7 +44,7 @@ public class SistemaEscapeHouse {
     // carga de datos
     public void cargarDatosDesdeArchivo(String rutaArchivo) {
         //banderita
-        System.out.println("Cargando datos desde: " + rutaArchivo );
+        System.out.println("Cargando datos desde: " + rutaArchivo);
 
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
@@ -92,7 +92,6 @@ public class SistemaEscapeHouse {
         }
     }
 
-
     //metodo archivo log prueba
     /*
     Utilizar un archivo de log (archivo de texto) para guardar la siguiente información: estado
@@ -100,15 +99,16 @@ public class SistemaEscapeHouse {
     se realizan a lo largo de la ejecución (Ej: “Se crea la habitación 01”, “Se borró el desafío D1”,
     etc), y el estado del sistema completo al momento de terminar de ejecutarse.
 
-    */
-   public void crearLog(){
-    try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, false))) {
+     */
+    public void crearLog() {
+        try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, false))) {
             out.println("Log Creado");
         } catch (IOException e) {
             System.out.println("Error al crear el log.");
         }
-   }
-    public void escribirLog(String msj){
+    }
+
+    public void escribirLog(String msj) {
         try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, true))) {
             out.println(msj);
         } catch (IOException e) {
@@ -117,7 +117,6 @@ public class SistemaEscapeHouse {
     }
 
     // METODOS SOBRE HABITACIONES
-
     // ABM
     public boolean altaHabitacion(Habitacion hab) {
         boolean exito = false;
@@ -126,7 +125,7 @@ public class SistemaEscapeHouse {
             if (exito) {
                 this.plano.insertarHabitacion(hab.getCodigo());
                 //escribir en el log
-                escribirLog("se creo habitacion nro:" + hab.getCodigo());
+                escribirLog("Se creó la habitación " + hab.getCodigo());
             }
         }
         return exito;
@@ -139,7 +138,7 @@ public class SistemaEscapeHouse {
             exito = this.habitaciones.eliminar(hab);
             if (exito) {
                 this.plano.eliminarHabitacion(hab.getCodigo());
-                                escribirLog("se borro habitacion nro:" + codigo);
+                escribirLog("Se eliminó la habitación " + codigo);
 
             }
         }
@@ -160,7 +159,6 @@ public class SistemaEscapeHouse {
     }
 
     // CONSULTAS
-
     public String mostrarHabitacion(String codigoHabitacion) {
         String s = "";
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
@@ -190,7 +188,7 @@ public class SistemaEscapeHouse {
 
     public String minimoPuntaje(String hab1, String hab2) {
         String s;
-        int[] puntaje = { 0 };
+        int[] puntaje = {0};
         Lista caminoMinimo = this.plano.minimoPuntaje(hab1, hab2, puntaje);
 
         if (!caminoMinimo.esVacia()) {
@@ -217,14 +215,13 @@ public class SistemaEscapeHouse {
     }
 
     // METODOS SOBRE DESAFÍOS
-
     // ABM
     public boolean altaDesafio(String codigoHabitacion, Desafio desafio) {
         boolean exito = false;
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().insertar(desafio);
-            escribirLog("Se creo desafio ");
+            escribirLog("Se creó desafio ");
         }
         return exito;
     }
@@ -234,7 +231,7 @@ public class SistemaEscapeHouse {
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().eliminar(new Desafio(puntaje));
-            escribirLog("Se elimino desafio");
+            escribirLog("Se eliminó desafio");
 
         }
         return exito;
@@ -264,7 +261,6 @@ public class SistemaEscapeHouse {
      * mostrarDesafío: Dado un código de desafío y un número de habitación,
      * mostrar toda su información.
      */
-
     public String mostrarDesafio(int codigoDesafio, String codigoHabitacion) {
         String s;
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
@@ -285,7 +281,6 @@ public class SistemaEscapeHouse {
      * mostrarDesafíosResueltos: Dado un equipo eq, mostrar todos los desafíos que
      * ya resolvieron
      */
-
     public String mostrarDesafiosResueltos(String nombreEquipo) {
         String s = "El equipo no existe.";
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
@@ -305,7 +300,6 @@ public class SistemaEscapeHouse {
      * verificarDesafíoResuelto: Dado un equipo, un desafío y una habitación,
      * indicar si el equipo ya lo resolvió
      */
-
     public String verificarDesafioResuelto(String nombreEquipo, String codigoHabitacion, int puntajeDesafio) {
         String s = "El equipo, la habitación o el desafío no existen.";
 
@@ -338,7 +332,6 @@ public class SistemaEscapeHouse {
      * el rango [a, b] (por ejemplo, listar todos los desafíos de tipo lógico con
      * puntaje entre 30 y 55)
      */
-
     public String mostrarDesafiosTipo(String codHabitacion, int puntajeA, int puntajeB, String tipoDesafio) {
         String s = "";
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
@@ -361,19 +354,18 @@ public class SistemaEscapeHouse {
     }
 
     // METODOS SOBRE EQUIPOS
-
     // ABM
     public boolean altaEquipo(Equipo equipo) {
         boolean exito = false;
         exito = this.equipos.insertar(equipo.getNombre(), equipo);
-        escribirLog("Se a creado un equipo "+equipo.getNombre());
+        escribirLog("Se creó un equipo " + equipo.getNombre());
         return exito;
     }
 
     public boolean bajaEquipo(String nombreEquipo) {
         boolean exito = false;
         exito = this.equipos.eliminar(nombreEquipo);
-        escribirLog("Elimine el equipo "+nombreEquipo);
+        escribirLog("Se eliminó el equipo " + nombreEquipo);
         return exito;
     }
 
@@ -392,7 +384,6 @@ public class SistemaEscapeHouse {
     }
 
     // Consultas:
-
     // mostrarInfoEquipo: Dado el nombre del equipo, mostrar todos sus datos.
     public String mostrarInfoEquipo(String nombre) {
         String info = "";
@@ -422,24 +413,27 @@ public class SistemaEscapeHouse {
 
         if (eq != null) {
             String habAct = eq.getHabitacionActual();
-            int[] puntajeRequerido = { 0 };
+            int[] puntajeRequerido = {0};
             boolean esAdyacente = this.plano.esAdyacente(habAct, habDest, puntajeRequerido);
             if (esAdyacente) {
                 int puntajeAcumulado = eq.getPuntajeHabitacion();
                 int faltante = puntajeRequerido[0] - puntajeAcumulado;
-                Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habDest));
+                Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
                 if (hab != null) {
                     if (faltante > 0) {
                         Lista desafios = hab.getDesafios().listarMayorIgualQue(new Desafio(faltante));
-                        if (desafios.esVacia()) {
+                        Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habDest);
+                        if (noResueltos.esVacia()) {
                             s = "No hay desafios que el equipo podria resolver para pasar a  hab resolviendo uno solo";
                         } else {
-                            s = desafios.toString();
+                            s = noResueltos.toString();
                         }
                     } else {
+                        Lista desafios = hab.getDesafios().listar();
+                        Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habDest);
                         s = "Es posible acceder a " + habDest
                                 + " sin resolver ningun desafio, o podria resolver cualquiera de la lista:\n "
-                                + hab.getDesafios().listar();
+                                + noResueltos.toString();
                     }
                 } else {
                     s = "La habitacion destino no existe";
@@ -455,6 +449,23 @@ public class SistemaEscapeHouse {
         }
 
         return s;
+    }
+
+    private Lista filtrarNoResueltos(Lista desafios, String nombreEquipo, String codHabitacion) {
+
+        Lista resueltos = this.desafiosResueltos.obtenerValores(nombreEquipo);
+        Lista noResueltos = new Lista();
+        int longitud = desafios.longitud();
+
+        for (int i = 1; i <= longitud; i++) {
+            Desafio d = (Desafio) desafios.recuperar(i);
+            String idDesafio = "(" + codHabitacion + "," + d.getPuntaje() + ")";
+            if (resueltos.localizar(idDesafio) < 0) {
+                noResueltos.insertar(d, noResueltos.longitud() + 1);
+            }
+        }
+
+        return noResueltos;
     }
 
     /*
@@ -505,14 +516,13 @@ public class SistemaEscapeHouse {
      * los datos del
      * equipo apropiadamente.
      */
-
     public boolean cambiarDeHabitacion(String nombreEquipo, String habDestino) {
         boolean exito = false;
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
 
         if (eq != null) {
             String habAct = eq.getHabitacionActual();
-            int[] puntajeRequerido = { 0 };
+            int[] puntajeRequerido = {0};
             boolean esAdyacente = this.plano.esAdyacente(habAct, habDestino, puntajeRequerido);
             if (esAdyacente) {
                 int puntajeAcumulado = eq.getPuntajeHabitacion();
@@ -537,7 +547,6 @@ public class SistemaEscapeHouse {
      * si la
      * habitación en la que se encuentra tiene o no salida al exterior
      */
-
     public boolean puedeSalir(String nombreEquipo) {
         boolean exito = false;
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
@@ -547,7 +556,7 @@ public class SistemaEscapeHouse {
             if (habitacion != null) {
                 if (habitacion.tieneSalida()) {
                     if (eq.getPuntajeNecesario() <= eq.getPuntajeTotal()) {
-                        exito=true;
+                        exito = true;
                     }
                 }
             }
@@ -557,34 +566,32 @@ public class SistemaEscapeHouse {
     }
 
     // 6. Mostrar sistema
-
     public String mostrarSistema() {
 
         String sistema = "";
 
-        sistema = "Plano (grafo): " + this.plano.toString() + "\n" +
-                "Habitaciones (avl): " + this.habitaciones.toString() + "\n" +
-                "Equipos (diccionario): " + this.equipos.toString() + "\n" +
-                "Desafios resueltos (mapeo a muchos): " + this.desafiosResueltos.toString();
+        sistema = "Plano (grafo): " + this.plano.toString() + "\n"
+                + "Habitaciones (avl): " + this.habitaciones.toString() + "\n"
+                + "Equipos (diccionario): " + this.equipos.toString() + "\n"
+                + "Desafios resueltos (mapeo a muchos): " + this.desafiosResueltos.toString();
 
         return sistema;
     }
 
     // puerta - conexion del plano
-
-    public boolean altaPuerta(String habitacion1, String habitacion2, int puntajeExigido) {
-        // entro exito
-        // la vuelta exito 2
-        boolean exito1 = this.plano.insertarConexion(habitacion1, habitacion2, puntajeExigido);
-        boolean exito2 = this.plano.insertarConexion(habitacion2, habitacion1, puntajeExigido);
-        escribirLog("Se paso de puerta ");
-        return exito1 && exito2;
+    public boolean altaPuerta(String codHabitacion1, String codHabitacion2, int puntajeExigido) {
+        boolean exito = this.plano.insertarConexion(codHabitacion1, codHabitacion2, puntajeExigido);
+        if (exito) {
+            escribirLog("Se creó puerta entre " + codHabitacion1 + " y " + codHabitacion2);
+        }
+        return exito;
     }
 
-    public boolean bajaPuerta(String habitacion1, String habitacion2) {
-        boolean exito1 = this.plano.eliminarConexion(habitacion1, habitacion2);
-        boolean exito2 = this.plano.eliminarConexion(habitacion2, habitacion1);
-        escribirLog("se elimino puerta");
-        return exito1 || exito2;
+    public boolean bajaPuerta(String codHabitacion1, String codHabitacion2) {
+        boolean exito = this.plano.eliminarConexion(codHabitacion1, codHabitacion2);
+        if (exito) {
+            escribirLog("Se eliminó puerta entre " + codHabitacion1 + " y " + codHabitacion2);
+        }
+        return exito;
     }
 }

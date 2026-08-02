@@ -314,10 +314,8 @@ public class ArbolAVL {
             if (cmp >= 0) {
                 listarMayorIgualQueAux(n.getIzquierdo(), minimo, lis);
                 lis.insertar(n.getElem(), lis.longitud() + 1);
-                listarMayorIgualQueAux(n.getDerecho(), minimo, lis);
-            } else {
-                listarMayorIgualQueAux(n.getDerecho(), minimo, lis);
-            }
+            } 
+            listarMayorIgualQueAux(n.getDerecho(), minimo, lis);
         }
     }
 }
