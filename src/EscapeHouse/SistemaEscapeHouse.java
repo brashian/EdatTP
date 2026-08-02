@@ -12,20 +12,20 @@ import estructuras.lineales.*;
 
 public class SistemaEscapeHouse {
 
-    private Plano plano;
+    private Grafo plano;
     private ArbolAVL habitaciones;
     private Diccionario equipos;
     private MapeoAMuchos desafiosResueltos;
     private String rutaLog = "datianos/log.txt";
 
     public SistemaEscapeHouse() {
-        this.plano = new Plano();
+        this.plano = new Grafo();
         this.habitaciones = new ArbolAVL();
         this.equipos = new Diccionario();
         this.desafiosResueltos = new MapeoAMuchos();
     }
 
-    public Plano getPlano() {
+    public Grafo getGrafo() {
         return this.plano;
     }
 
@@ -123,7 +123,7 @@ public class SistemaEscapeHouse {
         if (hab.esIntermedia()) {
             exito = this.habitaciones.insertar(hab);
             if (exito) {
-                this.plano.insertarHabitacion(hab.getCodigo());
+                this.plano.insertarVertice(hab.getCodigo());
                 //escribir en el log
                 escribirLog("Se creó la habitación " + hab.getCodigo());
             }
@@ -137,7 +137,7 @@ public class SistemaEscapeHouse {
         if (hab != null && hab.esIntermedia()) {
             exito = this.habitaciones.eliminar(hab);
             if (exito) {
-                this.plano.eliminarHabitacion(hab.getCodigo());
+                this.plano.eliminarVertice(hab.getCodigo());
                 escribirLog("Se eliminó la habitación " + codigo);
 
             }
@@ -172,7 +172,7 @@ public class SistemaEscapeHouse {
     }
 
     public String habitacionesContiguas(String codigoHabitacion) {
-        return this.plano.habitacionesContiguas(codigoHabitacion);
+        return this.plano.adyacentesDe(codigoHabitacion);
     }
 
     public String esPosibleLlegar(String hab1, String hab2, int k) {
@@ -451,8 +451,10 @@ public class SistemaEscapeHouse {
         return s;
     }
 
+    /*
+     * filtrarNoResueltos devuelve una nueva Lista con unicamente los desafios que ese equipo todavía NO resolvió 
+     */
     private Lista filtrarNoResueltos(Lista desafios, String nombreEquipo, String codHabitacion) {
-
         Lista resueltos = this.desafiosResueltos.obtenerValores(nombreEquipo);
         Lista noResueltos = new Lista();
         int longitud = desafios.longitud();
@@ -580,7 +582,7 @@ public class SistemaEscapeHouse {
 
     // puerta - conexion del plano
     public boolean altaPuerta(String codHabitacion1, String codHabitacion2, int puntajeExigido) {
-        boolean exito = this.plano.insertarConexion(codHabitacion1, codHabitacion2, puntajeExigido);
+        boolean exito = this.plano.insertarArco(codHabitacion1, codHabitacion2, puntajeExigido);
         if (exito) {
             escribirLog("Se creó puerta entre " + codHabitacion1 + " y " + codHabitacion2);
         }
@@ -588,7 +590,7 @@ public class SistemaEscapeHouse {
     }
 
     public boolean bajaPuerta(String codHabitacion1, String codHabitacion2) {
-        boolean exito = this.plano.eliminarConexion(codHabitacion1, codHabitacion2);
+        boolean exito = this.plano.eliminarArco(codHabitacion1, codHabitacion2);
         if (exito) {
             escribirLog("Se eliminó puerta entre " + codHabitacion1 + " y " + codHabitacion2);
         }
