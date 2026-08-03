@@ -64,7 +64,7 @@ public class SistemaEscapeHouse {
                         Habitacion hab = new Habitacion(datos[1].trim(), datos[2].trim(),
                                 Integer.parseInt(datos[3].trim()), Double.parseDouble(datos[4].trim()),
                                 Boolean.parseBoolean(datos[5].trim()), Boolean.parseBoolean(datos[6].trim()));
-                        this.altaHabitacion(hab);
+                        this.cargarHabitacion(hab);
                         break;
 
                     case "P":
@@ -161,6 +161,22 @@ public class SistemaEscapeHouse {
                 //escribir en el log
                 escribirLog("Se creó la habitación " + hab.getCodigo());
             }
+        }
+        return exito;
+    }
+
+    /*
+     * cargarHabitacion: inserta una habitación durante la carga inicial desde
+     * archivo, sin la restricción de esIntermedia() que aplica al alta durante
+     * el juego (la carga inicial necesita poder cargar también las
+     * habitaciones de entrada y de salida, que forman parte del plano de la
+     * casa desde el principio).
+     */
+    private boolean cargarHabitacion(Habitacion hab) {
+        boolean exito = this.habitaciones.insertar(hab);
+        if (exito) {
+            this.plano.insertarVertice(hab.getCodigo());
+            escribirLog("Se creó la habitación " + hab.getCodigo());
         }
         return exito;
     }

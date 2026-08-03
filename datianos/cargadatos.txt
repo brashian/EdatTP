@@ -1,0 +1,83 @@
+H;H16;Escritorio;1;14;false;false
+H;H17;Gimnasio;1;25;false;false
+H;H15;Dormitorio de huéspedes;1;18;false;false
+H;H14;Dormitorio principal;1;20;false;false
+H;H06;Escalera;0;6;false;false
+H;H12;Lavadero;-1;10;false;false
+H;H18;Sala de Juegos;1;20;false;false
+H;H19;Altillo;2;12;false;false
+H;H09;Bodega;-1;30;false;false
+H;H03;Cocina;0;18;false;false
+H;H07;Baño;0;5;false;false
+H;H08;Despensa;0;8;false;false
+H;H04;Sala de Estar;0;22;false;false
+H;H02;Comedor;0;20;false;false
+H;H20;Quincho;0;28;true;false
+H;H05;Biblioteca;0;16;false;false
+H;H13;Cochera;0;24;true;false
+H;H01;Recibidor;0;25;true;true
+H;H10;Sótano;-1;35;false;false
+H;H11;Depósito;-1;15;false;false
+
+P;H01;H02;30
+P;H02;H03;40
+P;H03;H08;20
+P;H08;H07;15
+P;H07;H04;35
+P;H04;H05;25
+P;H05;H01;50
+P;H01;H13;60
+P;H01;H20;45
+P;H04;H06;55
+P;H06;H09;40
+P;H06;H14;65
+P;H09;H10;30
+P;H10;H11;35
+P;H11;H12;25
+P;H12;H09;20
+P;H14;H15;45
+P;H15;H16;30
+P;H16;H17;55
+P;H17;H18;40
+P;H18;H14;35
+P;H16;H19;70
+
+D;10;H01;Acertijo de bienvenida;Lógico
+D;30;H02;Adivina el menú;Lógico
+D;20;H01;Rompecabezas de piso;Ingenio
+D;10;H03;Cronómetro de cocción;Destreza
+D;70;H01;Cifrado del mayordomo;Búsqueda
+D;35;H04;Silla musical;Destreza
+D;30;H01;Ecuación en el reloj;Matemático
+D;45;H05;Código Dewey;Búsqueda
+D;60;H01;Nudo del candelabro;Destreza
+D;15;H07;Grifo correcto;Destreza
+D;40;H01;Anagrama del apellido;Lógico
+D;20;H08;Inventario exacto;Matemático
+D;50;H01;Suma de las iniciales;Matemático
+D;50;H09;Etiqueta de la añada;Búsqueda
+D;80;H01;Laberinto de espejos;Ingenio
+D;25;H03;Receta secreta;Matemático
+D;40;H10;Interruptor misterioso;Ingenio
+D;20;H05;Anagrama de autor;Lógico
+D;30;H11;Caja etiquetada;Lógico
+D;15;H12;Combinación de lavado;Matemático
+D;55;H13;Motor averiado;Destreza
+D;35;H14;Caja fuerte;Lógico
+D;25;H15;Maleta con clave;Matemático
+D;40;H16;Documento cifrado;Búsqueda
+D;45;H17;Circuito cronometrado;Destreza
+D;30;H18;Ajedrez relámpago;Ingenio
+D;60;H19;Baúl olvidado;Búsqueda
+D;20;H20;Parrilla exacta;Matemático
+
+E;Los Valientes;400;130;H04;0;(H01,60);(H01,70)
+E;Los Locos Adams;400;10;H03;10;(H03,10)
+E;Fantasmas del Ático;350;0;H01;0
+E;Los Sherlocks;300;90;H09;0;(H01,20);(H01,70)
+E;Equipo Enigma;400;20;H05;20;(H05,20)
+E;Detectives Salvajes;350;45;H17;45;(H17,45)
+E;Codigo Rojo;300;0;H01;0
+E;Los Rompecabezas;400;30;H02;30;(H02,30)
+E;Mentes Maestras;350;55;H13;55;(H13,55)
+E;Los Improbables;300;150;H06;0;(H01,10);(H01,20);(H01,30);(H01,40);(H01,50)
