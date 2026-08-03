@@ -24,6 +24,16 @@ public class Equipo {
         this.puntajeHabitacion = 0;
     }
 
+    // Constructor usado por la carga inicial desde archivo (formato:
+    // E;nombre;puntajeExigido;puntajeTotal;habitacionActual;puntajeHabitacion)
+    public Equipo(String nombre, int puntajeNecesario, int puntajeTotal, String habitacionActual, int puntajeHabitacion) {
+        this.nombre = nombre;
+        this.puntajeNecesario = puntajeNecesario;
+        this.puntajeTotal = puntajeTotal;
+        this.habitacionActual = habitacionActual;
+        this.puntajeHabitacion = puntajeHabitacion;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -60,14 +70,12 @@ public class Equipo {
         this.puntajeHabitacion = puntajeHabitacion;
     }
 
-
-    public String toString(){
-        return "Equipo: "+ this.nombre + "\n"+
-               "Habitacion actual: "+this.habitacionActual + "\n"+
-               "Puntaje habitación: "+this.puntajeHabitacion+ "\n"+
-               "Puntaje total : " + this.puntajeTotal + "\n"+
-               "Punos necesarios: " + this.puntajeNecesario ;
+    public String toString() {
+        return "Equipo: " + this.nombre + "\n"
+                + "Habitacion actual: " + this.habitacionActual + "\n"
+                + "Puntaje habitación: " + this.puntajeHabitacion + "\n"
+                + "Puntaje total : " + this.puntajeTotal + "\n"
+                + "Punos necesarios: " + this.puntajeNecesario;
     }
-
 
 }

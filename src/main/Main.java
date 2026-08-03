@@ -32,7 +32,7 @@ public class Main {
                     sistema.mostrarSistema();
                     break;
                 case 0:
-                    sistema.registrarLog("Ejecución finalizada por el usuario.");
+                    sistema.escribirLog("Ejecución finalizada por el usuario.");
                     System.out.println("¡Gracias por jugar a Escape House!");
                     break;
                 default:
