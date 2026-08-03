@@ -1,14 +1,13 @@
 package EscapeHouse;
 
+import estructuras.conjuntistas.*;
+import estructuras.grafos.*;
+import estructuras.lineales.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import estructuras.grafos.*;
-import estructuras.conjuntistas.*;
-import estructuras.lineales.*;
 
 public class SistemaEscapeHouse {
 
@@ -25,7 +24,7 @@ public class SistemaEscapeHouse {
         this.desafiosResueltos = new MapeoAMuchos();
     }
 
-    public Grafo getGrafo() {
+    public Grafo getPlano() {
         return this.plano;
     }
 
@@ -52,32 +51,67 @@ public class SistemaEscapeHouse {
             while ((linea = br.readLine()) != null) {
 
                 // para separar
-                // si viene H ; codigo ; nombre ; planta ; m2 ; tieneSalida
+                
                 String[] datos = linea.split(";");
                 String tipo = datos[0];
 
                 switch (tipo) {
                     case "H":
+
+                        // si viene H ; codigo ; nombre ; planta ; m2 ; tieneSalida ; esEntrada
+                        // H;1;Comedor;0;20;false;false
+
                         Habitacion hab = new Habitacion(datos[1].trim(), datos[2].trim(),
                                 Integer.parseInt(datos[3].trim()), Double.parseDouble(datos[4].trim()),
-                                Boolean.parseBoolean(datos[5].trim()));
+                                Boolean.parseBoolean(datos[5].trim()), Boolean.parseBoolean(datos[6].trim()));
                         this.altaHabitacion(hab);
                         break;
 
                     case "P":
+
+                        // Puerta: hab1, hab2, puntaje requerido (peso)
+                        // P;1;2;40
+
                         this.altaPuerta(datos[1].trim(), datos[2].trim(), Integer.parseInt(datos[3].trim()));
                         break;
 
                     case "D":
+
+                        // Desafío: puntaje que otorga, código de habitación, nombre y tipo     
+                        // D;30;1;Acertijo;Lógico
+
                         Desafio des = new Desafio(Integer.parseInt(datos[1].trim()), datos[3].trim(), datos[4].trim());
                         this.altaDesafio(datos[2].trim(), des);
                         break;
 
                     case "E":
+                        
+                        //Equipo: nombre del equipo (único), puntaje exigido para salir de la casa, puntaje total
+                        //(acumulado en lo que va del juego), habitación en la que se encuentran actualmente y
+                        //puntaje actual (acumulado dentro de la habitación que están ubicados).
+
+                        //E;Los Valientes;400;130;4;0; ... lista de desafios resueltos por habitacion
+
                         Equipo eq = new Equipo(datos[1].trim(), Integer.parseInt(datos[2].trim()),
                                 Integer.parseInt(datos[3].trim()), datos[4].trim(),
                                 Integer.parseInt(datos[5].trim()));
                         this.altaEquipo(eq);
+
+                        // datos[6] en adelante (si existen): desafíos ya resueltos por el equipo,
+                        // uno por desafioResuelto, formato "(codigoHabitacion,puntaje)" -- ej: (1,20);(1,50);(2,30)
+                        
+                        for (int i = 6; i < datos.length; i++) {
+                            String desafioResuelto = datos[i].trim();
+                            if (!desafioResuelto.isEmpty()) {
+                                String contenido = desafioResuelto.substring(1, desafioResuelto.length() - 1); // saca "(" y ")"
+                                String[] partesDesafioResuelto = contenido.split(",");
+                                String codHabDesafio = partesDesafioResuelto[0].trim();
+                                int puntajeDesafio = Integer.parseInt(partesDesafioResuelto[1].trim());
+                                String idDesafio = "(" + codHabDesafio + "," + puntajeDesafio + ")";
+                                this.desafiosResueltos.asociar(datos[1].trim(), idDesafio);
+                            }
+                        }
+
                         break;
                 }
             }
