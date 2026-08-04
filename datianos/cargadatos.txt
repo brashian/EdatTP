@@ -70,6 +70,13 @@ D;45;H17;Circuito cronometrado;Destreza
 D;30;H18;Ajedrez relámpago;Ingenio
 D;60;H19;Baúl olvidado;Búsqueda
 D;20;H20;Parrilla exacta;Matemático
+D;45;H06;Escalón flojo;Destreza
+D;20;H12;Tendedero organizado;Destreza
+D;15;H13;Llave de rueda perdida;Búsqueda
+D;20;H15;Ventana atascada;Destreza
+D;15;H18;Dado cargado;Lógico
+D;20;H19;Polvo revelador;Búsqueda
+D;30;H20;Leña húmeda;Destreza
 
 E;Los Valientes;400;130;H04;0;(H01,60);(H01,70)
 E;Los Locos Adams;400;10;H03;10;(H03,10)
