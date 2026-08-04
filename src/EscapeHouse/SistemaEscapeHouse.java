@@ -559,6 +559,20 @@ public class SistemaEscapeHouse {
         return exito;
     }
 
+    private int recalcularPuntajeHabitacion(String nombreEquipo, String codHabitacion) {
+    Lista resueltos = this.desafiosResueltos.obtenerValores(nombreEquipo);
+    int suma = 0;
+    for (int i = 1; i <= resueltos.longitud(); i++) {
+        String idDesafio = (String) resueltos.recuperar(i);
+        String contenido = idDesafio.substring(1, idDesafio.length() - 1);
+        String[] partes = contenido.split(",");
+        if (partes[0].trim().equals(codHabitacion)) {
+            suma += Integer.parseInt(partes[1].trim());
+        }
+    }
+    return suma;
+}
+
     /*
      * cambiarDeHabitacion: Dado un equipo eq y una habitación hab, verificar si es
      * posible que
@@ -581,7 +595,7 @@ public class SistemaEscapeHouse {
                 int faltante = puntajeRequerido[0] - puntajeAcumulado;
                 if (faltante <= 0) {
                     eq.setHabitacionActual(habDestino);
-                    eq.setPuntajeHabitacion(0);
+                    eq.setPuntajeHabitacion(recalcularPuntajeHabitacion(nombreEquipo, habDestino));
                     exito = true;
 
                 }
