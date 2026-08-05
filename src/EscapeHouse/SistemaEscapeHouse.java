@@ -15,7 +15,7 @@ public class SistemaEscapeHouse {
     private ArbolAVL habitaciones;
     private Diccionario equipos;
     private MapeoAMuchos desafiosResueltos;
-    private String rutaLog = "EdatTP/datianos/log.txt";
+    private String rutaLog = "datianos\\log.txt";
 
     public SistemaEscapeHouse() {
         this.plano = new Grafo();
