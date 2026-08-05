@@ -15,7 +15,7 @@ public class SistemaEscapeHouse {
     private ArbolAVL habitaciones;
     private Diccionario equipos;
     private MapeoAMuchos desafiosResueltos;
-    private String rutaLog = "datianos/log.txt";
+    private String rutaLog = "EdatTP/datianos/log.txt";
 
     public SistemaEscapeHouse() {
         this.plano = new Grafo();
@@ -86,18 +86,16 @@ public class SistemaEscapeHouse {
 
                     case "E":
                         
-                        //Equipo: nombre del equipo (único), puntaje exigido para salir de la casa, puntaje total
-                        //(acumulado en lo que va del juego), habitación en la que se encuentran actualmente y
-                        //puntaje actual (acumulado dentro de la habitación que están ubicados).
+                       
 
-                        //E;Los Valientes;400;130;4;0; ... lista de desafios resueltos por habitacion
+                       
 
                         Equipo eq = new Equipo(datos[1].trim(), Integer.parseInt(datos[2].trim()),
                                 Integer.parseInt(datos[3].trim()), datos[4].trim(),
                                 Integer.parseInt(datos[5].trim()));
                         this.altaEquipo(eq);
 
-                        // datos[6] en adelante (si existen): desafíos ya resueltos por el equipo,
+                        // datos[6]  desafíos ya resueltos por el equipo,
                         // uno por desafioResuelto, formato "(codigoHabitacion,puntaje)" -- ej: (1,20);(1,50);(2,30)
                         
                         for (int i = 6; i < datos.length; i++) {
@@ -138,7 +136,7 @@ public class SistemaEscapeHouse {
         try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, false))) {
             out.println("Log Creado");
         } catch (IOException e) {
-            System.out.println("Error al crear el log.");
+            System.out.println("Error al crear el log." + e.getMessage());
         }
     }
 
@@ -146,7 +144,7 @@ public class SistemaEscapeHouse {
         try (PrintWriter out = new PrintWriter(new FileWriter(rutaLog, true))) {
             out.println(msj);
         } catch (IOException e) {
-            System.out.println("Error al escribir en el log.");
+            System.out.println("Error al escribir en el log."+e.getMessage());
         }
     }
 
