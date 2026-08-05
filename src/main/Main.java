@@ -31,7 +31,7 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    sistema.cargarDatosDesdeArchivo("EdatTP\\datianos\\cargadatos.txt");
+                    sistema.cargarDatosDesdeArchivo("datianos\\cargadatos.txt");
                     break;
                 case 2:
                     menuABM(sistema, sc);

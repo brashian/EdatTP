@@ -69,6 +69,7 @@ public class ArbolAVL {
     // -2) y su *hijo derecho* está caído hacia el mismo lado (balance -1) o es
     // neutro (balance 0).
     private NodoAVL rotarIzquierda(NodoAVL r) {
+        //System.out.println("ROTACION SIMPLE IZQUIERDA pivote: "+r.getElem());
         NodoAVL h = r.getDerecho();
         NodoAVL temp = h.getIzquierdo();
         h.setIzquierdo(r);
@@ -82,6 +83,7 @@ public class ArbolAVL {
     // (balance 2) y su *hijo izquierdo* está caído hacia el mismo lado (balance 1)
     // o es neutro (balance 0).
     private NodoAVL rotarDerecha(NodoAVL r) {
+        //System.out.println("ROTACION SIMPLE DERECHA pivote: "+r.getElem());
         NodoAVL h = r.getIzquierdo();
         NodoAVL temp = h.getDerecho();
         h.setDerecho(r);
@@ -95,6 +97,7 @@ public class ArbolAVL {
     // -2) y su hijo derecho está caído hacia el lado contrario (balance 1).
 
     private NodoAVL rotarDerechaIzquierda(NodoAVL r) {
+        //System.out.println("ROTACION DER-IZQ pivote: "+r.getElem());
         r.setDerecho(rotarDerecha(r.getDerecho())); // paso 1: rotar hijo
         return rotarIzquierda(r); // paso 2: rotar padre
     }
@@ -104,6 +107,7 @@ public class ArbolAVL {
     // -1).
 
     private NodoAVL rotarIzquierdaDerecha(NodoAVL r) {
+        //System.out.println("ROTACION IZQ-DER pivote: "+r.getElem());
         r.setIzquierdo(rotarIzquierda(r.getIzquierdo())); // paso 1: rotar hijo
         return rotarDerecha(r); // paso 2: rotar padre
     }
