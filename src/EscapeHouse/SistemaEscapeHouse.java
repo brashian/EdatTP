@@ -611,23 +611,40 @@ public class SistemaEscapeHouse {
      * si la
      * habitación en la que se encuentra tiene o no salida al exterior
      */
-    public boolean puedeSalir(String nombreEquipo) {
-        boolean exito = false;
+    public String puedeSalir(String nombreEquipo) {
+        String msj = "";
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
         if (eq != null) {
+                msj+="Con Puntaje Total de "+ eq.getPuntajeTotal() + "y un puntaje necesario para ganar de "+eq.getPuntajeNecesario();
+
             String habAct = eq.getHabitacionActual();
-            Habitacion habitacion = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
-            if (habitacion != null) {
-                if (habitacion.tieneSalida()) {
+            Habitacion ParadoEnhab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
+
+            if (ParadoEnhab != null) {
+                if (ParadoEnhab.tieneSalida()) {
+                    msj += "la habitacion "+ ParadoEnhab.getNombre()+ "tiene salida";
                     if (eq.getPuntajeNecesario() <= eq.getPuntajeTotal()) {
-                        exito = true;
+                        msj += "el equipo " + eq.getNombre() + " puede salir y ganar";
+                    }else{
+                        msj += "el equipo " + eq.getNombre() + " no puede salir por falta de puntos";
                     }
+                }else{
+                    msj += "la habitacion "+ ParadoEnhab.getNombre()+ "no tiene salida";
                 }
+            }else{
+            msj = "No existe la habitacion donde estarian parados";
+
             }
 
+        }else{
+            msj = "No existe el equipo";
         }
-        return exito;
+        return msj;
     }
+    
+   
+
+
 
     // 6. Mostrar sistema
     public String mostrarSistema() {
