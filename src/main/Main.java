@@ -453,11 +453,9 @@ public class Main {
                 case 5:
                     System.out.print("Nombre Equipo: ");
                     String eqSalir = sc.nextLine();
-                    if (sistema.puedeSalir(eqSalir)) {
-                        System.out.println("El equipo PUEDE salir.");
-                    } else {
-                        System.out.println("El equipo NO PUEDE salir.");
-                    }
+                    
+                    String msj=sistema.puedeSalir(eqSalir);
+                    System.out.println(msj);
                     break;
 
                 case 0:
