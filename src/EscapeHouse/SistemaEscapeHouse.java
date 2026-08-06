@@ -365,7 +365,7 @@ public class SistemaEscapeHouse {
                     s = "El equipo " + nombreEquipo + " sí resolvió el desafío " + des.getNombre()
                             + " en la habitación " + codigoHabitacion + ".";
                 } else {
-                    s = "El equipo no resolvió ese desafío.";
+                    s = "El equipo no resolvió "+des.getNombre();
                 }
             }
         }
