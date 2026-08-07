@@ -49,7 +49,7 @@ public class Main {
                     System.out.println(sistema.mostrarSistema());
                     break;
                 case 0:
-                    sistema.escribirLog("Fin jaja");
+                    sistema.escribirLog("Fin de la ejecución");
                     System.out.println("¡Gracias por jugar a Escape House!");
                     break;
                 default:
@@ -227,14 +227,18 @@ public class Main {
                 case 9:
                     // no cambiar nombre
                     System.out.print("Nombre del Equipo a modificar: ");
-                     String nomEqMod = sc.nextLine();
+                    String nomEqMod = sc.nextLine();
+
                     System.out.print("Nuevo Puntaje exigido: ");
-                     int nPtsExigidos = sc.nextInt();
+                    int nPtsExigidos = sc.nextInt();
+
                     System.out.print("Nuevo Puntaje total: ");
-                     int nPtsTotal = sc.nextInt();
+                    int nPtsTotal = sc.nextInt();
                     sc.nextLine();
+
                     System.out.print("Nueva Habitacion actual: "); 
                     String nHabActual = sc.nextLine();
+                    
                     System.out.print("Nuevo Puntaje en habitacion: "); 
                     int nPtsHab = sc.nextInt();
                     sc.nextLine();
