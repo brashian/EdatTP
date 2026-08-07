@@ -16,7 +16,7 @@ public class Main {
         sistema.crearLog();
 
         do {
-           
+        
             System.out.println("1. Carga inicial");
             System.out.println("2. ABM (Habitaciones, Desafíos, Equipos)");
             System.out.println("3. Consultas sobre Habitaciones");
@@ -31,7 +31,7 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    sistema.cargarDatosDesdeArchivo("datianos\\cargadatos.txt");
+                    sistema.cargarDatosDesdeArchivo("datianos/cargadatos.txt");
                     break;
                 case 2:
                     menuABM(sistema, sc);
@@ -50,6 +50,7 @@ public class Main {
                     break;
                 case 0:
                     sistema.escribirLog(sistema.mostrarSistema());
+                    sistema.escribirLog("Fin de la ejecución");
                     System.out.println("¡Gracias por jugar a Escape House!");
                     break;
                 default:
@@ -227,14 +228,18 @@ public class Main {
                 case 9:
                     // no cambiar nombre
                     System.out.print("Nombre del Equipo a modificar: ");
-                     String nomEqMod = sc.nextLine();
+                    String nomEqMod = sc.nextLine();
+
                     System.out.print("Nuevo Puntaje exigido: ");
-                     int nPtsExigidos = sc.nextInt();
+                    int nPtsExigidos = sc.nextInt();
+
                     System.out.print("Nuevo Puntaje total: ");
-                     int nPtsTotal = sc.nextInt();
+                    int nPtsTotal = sc.nextInt();
                     sc.nextLine();
+
                     System.out.print("Nueva Habitacion actual: "); 
                     String nHabActual = sc.nextLine();
+                    
                     System.out.print("Nuevo Puntaje en habitacion: "); 
                     int nPtsHab = sc.nextInt();
                     sc.nextLine();
@@ -263,7 +268,7 @@ public class Main {
     private static void menuHabitaciones(SistemaEscapeHouse sistema, Scanner sc) {
         int opc;
         do {
-           
+        
             System.out.println("1. Mostrar Habi");
             System.out.println("2. Habitaciones Contiguas");
             System.out.println("3. Es posible llegar acumulando X pts");
@@ -357,6 +362,7 @@ public class Main {
                 case 2:
                     System.out.print("Nombre Equipo: ");
                     String nomEq = sc.nextLine();
+                    System.out.println("Desafios resuestos por: " + nomEq);
                     System.out.println(sistema.mostrarDesafiosResueltos(nomEq));
                     break;
 
@@ -410,12 +416,14 @@ public class Main {
 
             switch (opc) {
                 case 1:
+                    //Mostrar la info del equipo
                     System.out.print("Nombre Equipo: ");
                     String nomEq = sc.nextLine();
                     System.out.println(sistema.mostrarInfoEquipo(nomEq));
                     break;
 
                 case 2:
+                    //Desafios que puede hacer un equipo para pasar de habitacion
                     System.out.print("Nombre Equipo: ");
                     String eq = sc.nextLine();
                     System.out.print("Habi Destino: ");
@@ -424,6 +432,7 @@ public class Main {
                     break;
 
                 case 3:
+                    //Jugar desafio
                     System.out.print("Nombre Equipo: ");
                     String equi = sc.nextLine();
                     System.out.print("Codigo Habi: ");
@@ -439,18 +448,20 @@ public class Main {
                     break;
 
                 case 4:
-                    System.out.print("Nombre Equipo: ");
+                    //Cambiar de habitacion
+                    System.out.print("Nombre del Equipo: ");
                     String equiCambio = sc.nextLine();
-                    System.out.print("Habi Destino: ");
+                    System.out.print("Habitación de Destino: ");
                     String habDestino = sc.nextLine();
                     if (sistema.cambiarDeHabitacion(equiCambio, habDestino)) {
-                        System.out.println("Cambio de habi exitoso.");
+                        System.out.println("Cambio de habitación exitoso.");
                     } else {
-                        System.out.println("No se pudo cambiar de habi.");
+                        System.out.println("No se pudo cambiar de habitación.");
                     }
                     break;
 
                 case 5:
+                    //Mostrar si cumple las condiciones para salir
                     System.out.print("Nombre Equipo: ");
                     String eqSalir = sc.nextLine();
                     

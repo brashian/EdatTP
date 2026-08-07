@@ -75,7 +75,7 @@ public class Equipo {
                 + "Habitacion actual: " + this.habitacionActual + "\n"
                 + "Puntaje habitación: " + this.puntajeHabitacion + "\n"
                 + "Puntaje total : " + this.puntajeTotal + "\n"
-                + "Punos necesarios: " + this.puntajeNecesario;
+                + "Puntos necesarios: " + this.puntajeNecesario;
     }
 
 }
