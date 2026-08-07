@@ -73,6 +73,8 @@ public class SistemaEscapeHouse {
                         // P;1;2;40
 
                         this.altaPuerta(datos[1].trim(), datos[2].trim(), Integer.parseInt(datos[3].trim()));
+                        //vuelva el eq
+                        this.altaPuerta(datos[2].trim(), datos[1].trim(), Integer.parseInt(datos[3].trim()));
                         break;
 
                     case "D":
