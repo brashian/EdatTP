@@ -155,8 +155,8 @@ public class Grafo {
     }
 
     /*
-     * Busca origen y destino en un solo recorrido de la lista de vértices.
-     * Devuelve:
+     * Busca origen y destino en UN SOLO RECORRIDO de la lista de vértices.
+     * devuelve:
      * [0] = origen
      * [1] = destino
      */
@@ -614,8 +614,8 @@ public class Grafo {
     }
 
     // adyacentesDe: Dado un vértice, mostrar los vértices adyacentes a los que se
-    // puede acceder, y qué etiqueta (peso del arco) se necesita para pasar a cada
-    // uno
+    // puede acceder, y qué etiqueta (peso del arco) se necesita para pasar a cada uno
+    // devuelve un string
     public String adyacentesDe(Object elemento) {
         String s = "";
         NodoVertice v = this.ubicarVertice(elemento);
@@ -626,8 +626,7 @@ public class Grafo {
             NodoAdyacente aux = v.getPrimerAdyacente();
 
             while (aux != null) {
-                s += "- Vértice " + aux.getVertice().getElemento() + " (etiqueta: "
-                        + aux.getEtiqueta() + ")\n";
+                s += "- Vértice " + aux.getVertice().getElemento() + " (etiqueta: " + aux.getEtiqueta() + ")\n";
                 aux = aux.getSigAdyacente();
             }
         } else {
