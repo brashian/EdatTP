@@ -1,6 +1,6 @@
 H;H16;Escritorio;1;14;false;false
 H;H17;Gimnasio;1;25;true;false
-H;H15;Dormitorio de huéspedes;1;18;false;false
+H;H15;Dormitorio de huespedes;1;18;false;false
 H;H14;Dormitorio principal;1;20;false;false
 H;H06;Escalera;0;6;false;false
 H;H12;Lavadero;-1;10;false;false
@@ -16,8 +16,8 @@ H;H20;Quincho;0;28;true;false
 H;H05;Biblioteca;0;16;false;false
 H;H13;Garaje;0;24;false;false
 H;H01;Recibidor;0;25;false;true
-H;H10;Sótano;-1;35;true;false
-H;H11;Depósito;-1;15;false;false
+H;H10;Sotano;-1;35;true;false
+H;H11;Deposito;-1;15;false;false
 
 P;H01;H02;30
 P;H01;H06;55
@@ -41,40 +41,40 @@ P;H16;H15;30
 P;H16;H18;60
 P;H19;H17;20
 
-D;40;H01;Acertijo de bienvenida;Lógico
-D;20;H01;Encuentra al oso;Búsqueda
-D;40;H02;Adivina el menú;Lógico
+D;40;H01;Acertijo de bienvenida;Logico
+D;20;H01;Encuentra al oso;Busqueda
+D;40;H02;Adivina el menú;Logico
 D;40;H07;Rompecabezas de piso;Ingenio
-D;20;H08;Inventario exacto;Matemático
+D;20;H08;Inventario exacto;Matematico
 D;10;H03;Cocina el pollo;Destreza
 D;14;H03;Prepara el postre;Destreza
 D;11;H03;Cocina la carne;Destreza
 D;12;H03;Prepara la ensalada;Destreza
 D;13;H03;Sirve la mesa;Destreza
-D;45;H04;Código Binario;Búsqueda
-D;15;H04;Saltos al margen;Físico
-D;60;H13;Antonimos;Búsqueda
-D;70;H20;Pinchaglobos;Físico
-D;15;H05;Ordena los libros;Físico
-D;20;H06;Escalera en Matriz;Matemático
-D;40;H11;Suma de las iniciales;Matemático
-D;60;H11;Apila cajas;Físico
-D;80;H11;Caja etiquetada;Lógico
+D;45;H04;Código Binario;Busqueda
+D;15;H04;Saltos al margen;Fisico
+D;60;H13;Antonimos;Busqueda
+D;70;H20;Pinchaglobos;Fisico
+D;15;H05;Ordena los libros;Fisico
+D;20;H06;Escalera en Matriz;Matematico
+D;40;H11;Suma de las iniciales;Matematico
+D;60;H11;Apila cajas;Fisico
+D;80;H11;Caja etiquetada;Logico
 D;15;H12;Organizar tendedero;Destreza
 D;65;H09;Catador de vinos;Destreza
-D;60;H09;Formula secreta;Búsqueda
+D;60;H09;Formula secreta;Busqueda
 D;200;H10;Interruptor misterioso;Ingenio
-D;35;H16;Anagrama de autor;Lógico
-D;30;H16;Estante puzzle;Lógico
+D;35;H16;Anagrama de autor;Logico
+D;30;H16;Estante puzzle;Logico
 D;75;H18;Ping pong;Destreza
-D;20;H19;Corre Forest;Físico
-D;25;H17;Press logico;Lógico
+D;20;H19;Corre Forest;Fisico
+D;25;H17;Press logico;Logico
 D;35;H14;Hacer la cama;Destreza
-D;35;H15;Atrapados;Búsqueda
+D;35;H15;Atrapados;Busqueda
 
 E;Los Valientes;400;0;H01;0
 E;Los Locos Adams;400;40;H02;0;(H01,40)
-E;Fantasmas del Ático;350;80;H07;0;(H01,40);(H02,40)
+E;Fantasmas del Atico;350;80;H07;0;(H01,40);(H02,40)
 E;Los Sherlocks;300;80;H11;0;(H01,40);(H01,20);(H06,20)
 E;Equipo Enigma;300;135;H09;0;(H01,40);(H01,20);(H06,20);(H11,40);(H12,15)
 E;Detectives Salvajes;300;195;H10;0;(H01,40);(H01,20);(H06,20);(H11,40);(H12,15);(H09,60)
