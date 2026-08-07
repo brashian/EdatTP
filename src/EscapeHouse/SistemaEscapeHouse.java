@@ -269,7 +269,9 @@ public class SistemaEscapeHouse {
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().insertar(desafio);
-            escribirLog("Se creó desafio ");
+            if(exito){
+                escribirLog("Se creó desafio ");
+            }
         }
         return exito;
     }
@@ -279,8 +281,9 @@ public class SistemaEscapeHouse {
         Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
         if (hab != null) {
             exito = hab.getDesafios().eliminar(new Desafio(puntaje));
-            escribirLog("Se eliminó desafio");
-
+            if(exito){
+                escribirLog("Se eliminó desafio");
+            }
         }
         return exito;
     }
@@ -406,14 +409,18 @@ public class SistemaEscapeHouse {
     public boolean altaEquipo(Equipo equipo) {
         boolean exito = false;
         exito = this.equipos.insertar(equipo.getNombre(), equipo);
-        escribirLog("Se creó un equipo " + equipo.getNombre());
+        if(exito){
+            escribirLog("Se creó un equipo " + equipo.getNombre());
+        }
         return exito;
     }
 
     public boolean bajaEquipo(String nombreEquipo) {
         boolean exito = false;
         exito = this.equipos.eliminar(nombreEquipo);
-        escribirLog("Se eliminó el equipo " + nombreEquipo);
+        if(exito){
+            escribirLog("Se eliminó el equipo " + nombreEquipo);
+        }
         return exito;
     }
 
@@ -438,7 +445,8 @@ public class SistemaEscapeHouse {
         // obt info de diccionario
         Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombre);
         if (unEquipo != null) {
-            info = unEquipo.toString();
+            info = unEquipo.toString() + "\n" + 
+            "Desafios Resueltos: " + this.desafiosResueltos.obtenerValores(unEquipo.getNombre());
         } else {
             info = " Equipo no encontrado";
         }
@@ -470,18 +478,15 @@ public class SistemaEscapeHouse {
                 if (hab != null) {
                     if (faltante > 0) {
                         Lista desafios = hab.getDesafios().listarMayorIgualQue(new Desafio(faltante));
-                        Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habDest);
+                        Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habAct);
                         if (noResueltos.esVacia()) {
                             s = "No hay desafios que el equipo podria resolver para pasar a  hab resolviendo uno solo";
                         } else {
                             s = noResueltos.toString();
                         }
                     } else {
-                        Lista desafios = hab.getDesafios().listar();
-                        Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habDest);
                         s = "Es posible acceder a " + habDest
-                                + " sin resolver ningun desafio, o podria resolver cualquiera de la lista:\n "
-                                + noResueltos.toString();
+                                + " sin resolver ningun desafio\n ";
                     }
                 } else {
                     s = "La habitacion destino no existe";
@@ -615,29 +620,29 @@ public class SistemaEscapeHouse {
         String msj = "";
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
         if (eq != null) {
-                msj+="Con Puntaje Total de "+ eq.getPuntajeTotal() + "y un puntaje necesario para ganar de "+eq.getPuntajeNecesario();
+                msj+="Puntaje Total de "+ eq.getPuntajeTotal() + " y un puntaje necesario para ganar de "+eq.getPuntajeNecesario()+"\n";
 
             String habAct = eq.getHabitacionActual();
             Habitacion ParadoEnhab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
 
             if (ParadoEnhab != null) {
                 if (ParadoEnhab.tieneSalida()) {
-                    msj += "la habitacion "+ ParadoEnhab.getNombre()+ "tiene salida";
+                    msj += " La habitación en la que estan parados ''"+ ParadoEnhab.getNombre()+ "'' tiene salida "+"\n";
                     if (eq.getPuntajeNecesario() <= eq.getPuntajeTotal()) {
-                        msj += "el equipo " + eq.getNombre() + " puede salir y ganar";
+                        msj += " El equipo " + eq.getNombre() + " puede salir y ganar.";
                     }else{
-                        msj += "el equipo " + eq.getNombre() + " no puede salir por falta de puntos";
+                        msj += " El equipo " + eq.getNombre() + " no puede salir por falta de puntos.";
                     }
                 }else{
-                    msj += "la habitacion "+ ParadoEnhab.getNombre()+ "no tiene salida";
+                    msj += " La habitación en la que estan parados ''"+ ParadoEnhab.getNombre()+ "'' no tiene salida.";
                 }
             }else{
-            msj = "No existe la habitacion donde estarian parados";
+            msj = " No existe la habitacion donde estarian parados.";
 
             }
 
         }else{
-            msj = "No existe el equipo";
+            msj = " No existe el equipo.";
         }
         return msj;
     }

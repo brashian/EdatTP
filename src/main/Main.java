@@ -49,7 +49,7 @@ public class Main {
                     System.out.println(sistema.mostrarSistema());
                     break;
                 case 0:
-                    sistema.escribirLog("Fin jaja");
+                    sistema.escribirLog(sistema.mostrarSistema());
                     System.out.println("¡Gracias por jugar a Escape House!");
                     break;
                 default:
