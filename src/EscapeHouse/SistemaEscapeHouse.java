@@ -222,6 +222,7 @@ public class SistemaEscapeHouse {
     }
 
     public String habitacionesContiguas(String codigoHabitacion) {
+
         return this.plano.adyacentesDe(codigoHabitacion);
     }
 
@@ -242,10 +243,9 @@ public class SistemaEscapeHouse {
         Lista caminoMinimo = this.plano.minimoPuntaje(hab1, hab2, puntaje);
 
         if (!caminoMinimo.esVacia()) {
-            s = "Para llegar de " + hab1 + " a " + hab2 + " con " + puntaje[0]
-                    + " puntos, debería hacer el camino: " + caminoMinimo.toString();
+            s = "Para llegar de " + hab1 + " a " + hab2 + " con " + puntaje[0] + " puntos, debería hacer el camino: " + caminoMinimo.toString();
         } else {
-            s = "La/s habitación/es no existe/n o no hay camino posible";
+            s = "La/s habitación/es no existe/n o no hay camino posible";       
         }
         return s;
     }
@@ -459,7 +459,7 @@ public class SistemaEscapeHouse {
             info = unEquipo.toString() + "\n" +
                     "Desafios Resueltos: " + this.desafiosResueltos.obtenerValores(unEquipo.getNombre());
         } else {
-            info = " Equipo no encontrado";
+            info = "Equipo no encontrado";
         }
 
         return info;
