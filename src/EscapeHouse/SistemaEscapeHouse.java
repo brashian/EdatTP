@@ -12,14 +12,14 @@ import java.io.PrintWriter;
 public class SistemaEscapeHouse {
 
     private Grafo plano;
-    private ArbolAVL habitaciones;
+    private DiccionarioAVL habitaciones;
     private Diccionario equipos;
     private MapeoAMuchos desafiosResueltos;
     private String rutaLog = "datianos\\log.txt";
 
     public SistemaEscapeHouse() {
         this.plano = new Grafo();
-        this.habitaciones = new ArbolAVL();
+        this.habitaciones = new DiccionarioAVL();
         this.equipos = new Diccionario();
         this.desafiosResueltos = new MapeoAMuchos();
     }
@@ -28,7 +28,7 @@ public class SistemaEscapeHouse {
         return this.plano;
     }
 
-    public ArbolAVL getHabitaciones() {
+    public DiccionarioAVL getHabitaciones() {
         return this.habitaciones;
     }
 
@@ -155,7 +155,7 @@ public class SistemaEscapeHouse {
     public boolean altaHabitacion(Habitacion hab) {
         boolean exito = false;
         if (hab.esIntermedia()) {
-            exito = this.habitaciones.insertar(hab);
+            exito = this.habitaciones.insertar(hab.getCodigo(), hab);
             if (exito) {
                 this.plano.insertarVertice(hab.getCodigo());
                 // escribir en el log
@@ -173,7 +173,7 @@ public class SistemaEscapeHouse {
      * casa desde el principio).
      */
     private boolean cargarHabitacion(Habitacion hab) {
-        boolean exito = this.habitaciones.insertar(hab);
+        boolean exito = this.habitaciones.insertar(hab.getCodigo(), hab);
         if (exito) {
             this.plano.insertarVertice(hab.getCodigo());
             escribirLog("Se creó la habitación " + hab.getCodigo());
@@ -183,9 +183,9 @@ public class SistemaEscapeHouse {
 
     public boolean bajaHabitacion(String codigo) {
         boolean exito = false;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigo));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigo);
         if (hab != null && hab.esIntermedia()) {
-            exito = this.habitaciones.eliminar(hab);
+            exito = this.habitaciones.eliminar(codigo);
             if (exito) {
                 this.plano.eliminarVertice(hab.getCodigo());
                 escribirLog("Se eliminó la habitación " + codigo);
@@ -198,7 +198,7 @@ public class SistemaEscapeHouse {
 
     public boolean modificarHabitacion(String codigo, String nombre, int planta, double metrosCuadrados) {
         boolean exito = false;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigo));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigo);
         if (hab != null && hab.esIntermedia()) {
             hab.setNombre(nombre);
             hab.setPlanta(planta);
@@ -211,7 +211,7 @@ public class SistemaEscapeHouse {
     // CONSULTAS
     public String mostrarHabitacion(String codigoHabitacion) {
         String s = "";
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
         if (hab != null) {
             s = hab.toString();
         } else {
@@ -238,7 +238,7 @@ public class SistemaEscapeHouse {
 
     public String minimoPuntaje(String hab1, String hab2) {
         String s;
-        int[] puntaje = { 0 };
+        int[] puntaje = {0};
         Lista caminoMinimo = this.plano.minimoPuntaje(hab1, hab2, puntaje);
 
         if (!caminoMinimo.esVacia()) {
@@ -268,9 +268,9 @@ public class SistemaEscapeHouse {
     // ABM
     public boolean altaDesafio(String codigoHabitacion, Desafio desafio) {
         boolean exito = false;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
         if (hab != null) {
-            exito = hab.getDesafios().insertar(desafio);
+            exito = hab.getDesafios().insertar(desafio.getPuntaje(), desafio);
             if (exito) {
                 escribirLog("Se creó desafio ");
             }
@@ -280,9 +280,9 @@ public class SistemaEscapeHouse {
 
     public boolean bajaDesafio(String codigoHabitacion, int puntaje) {
         boolean exito = false;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
         if (hab != null) {
-            exito = hab.getDesafios().eliminar(new Desafio(puntaje));
+            exito = hab.getDesafios().eliminar(puntaje);
             if (exito) {
                 escribirLog("Se eliminó desafio");
             }
@@ -292,10 +292,10 @@ public class SistemaEscapeHouse {
 
     public boolean modificarDesafio(String codigoHabitacion, int puntaje, String nombre, String tipo) {
         boolean exito = false;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
 
         if (hab != null) {
-            Desafio des = (Desafio) hab.getDesafios().obtenerDato(new Desafio(puntaje));
+            Desafio des = (Desafio) hab.getDesafios().obtenerInformacion(puntaje);
 
             if (des != null) {
                 des.setNombre(nombre);
@@ -316,9 +316,9 @@ public class SistemaEscapeHouse {
      */
     public String mostrarDesafio(int codigoDesafio, String codigoHabitacion) {
         String s;
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
         if (hab != null) {
-            Desafio des = (Desafio) hab.getDesafios().obtenerDato(new Desafio(codigoDesafio));
+            Desafio des = (Desafio) hab.getDesafios().obtenerInformacion(codigoDesafio);
             if (des != null) {
                 s = des.toString();
             } else {
@@ -357,10 +357,10 @@ public class SistemaEscapeHouse {
         String s = "El equipo, la habitación o el desafío no existen.";
 
         Equipo eq = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codigoHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codigoHabitacion);
 
         if (eq != null && hab != null) {
-            Desafio des = (Desafio) hab.getDesafios().obtenerDato(new Desafio(puntajeDesafio));
+            Desafio des = (Desafio) hab.getDesafios().obtenerInformacion(puntajeDesafio);
 
             if (des != null) {
                 Lista desafios = this.desafiosResueltos.obtenerValores(nombreEquipo);
@@ -370,7 +370,7 @@ public class SistemaEscapeHouse {
                     s = "El equipo " + nombreEquipo + " sí resolvió el desafío " + des.getNombre()
                             + " en la habitación " + codigoHabitacion + ".";
                 } else {
-                    s = "El equipo no resolvió " + des.getNombre();
+                    s = "El equipo no resolvió "+des.getNombre();
                 }
             }
         }
@@ -387,9 +387,9 @@ public class SistemaEscapeHouse {
      */
     public String mostrarDesafiosTipo(String codHabitacion, int puntajeA, int puntajeB, String tipoDesafio) {
         String s = "";
-        Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
+        Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(codHabitacion);
         if (hab != null) {
-            Lista desafiosEnRango = hab.getDesafios().listarRango(new Desafio(puntajeA), new Desafio(puntajeB));
+            Lista desafiosEnRango = hab.getDesafios().listarDatosRango(puntajeA, puntajeB);
             int longitud = desafiosEnRango.longitud();
             for (int i = 1; i <= longitud; i++) {
                 Desafio elem = (Desafio) desafiosEnRango.recuperar(i);
@@ -485,10 +485,10 @@ public class SistemaEscapeHouse {
             if (esAdyacente) {
                 int puntajeAcumulado = eq.getPuntajeHabitacion();
                 int faltante = puntajeRequerido[0] - puntajeAcumulado;
-                Habitacion hab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
+                Habitacion hab = (Habitacion) this.habitaciones.obtenerInformacion(habAct);
                 if (hab != null) {
                     if (faltante > 0) {
-                        Lista desafios = hab.getDesafios().listarMayorIgualQue(new Desafio(faltante));
+                        Lista desafios = hab.getDesafios().listarDatosMayorIgualQue(faltante);
                         Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habAct);
                         if (noResueltos.esVacia()) {
                             s = "No hay desafios que el equipo podria resolver para pasar a  hab resolviendo uno solo";
@@ -496,7 +496,7 @@ public class SistemaEscapeHouse {
                             s = noResueltos.toString();
                         }
                     } else {
-                        Lista desafios = hab.getDesafios().listar();
+                        Lista desafios = hab.getDesafios().listarDatos();
                         Lista noResueltos = filtrarNoResueltos(desafios, nombreE, habAct);
                         s = "Es posible acceder a " + habDest
                                 + " sin resolver ningun desafio, o podria resolver cualquiera de la lista:\n "
@@ -550,15 +550,14 @@ public class SistemaEscapeHouse {
         boolean exito = false;
 
         Equipo unEquipo = (Equipo) this.equipos.obtenerInformacion(nombreEquipo);
-        Habitacion habitacion = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(codHabitacion));
+        Habitacion habitacion = (Habitacion) this.habitaciones.obtenerInformacion(codHabitacion);
 
         boolean existenDatos = (unEquipo != null && habitacion != null);
         boolean estaEnLaHabitacionCorrecta = existenDatos && unEquipo.getHabitacionActual().equals(codHabitacion);
 
         if (estaEnLaHabitacionCorrecta) {
 
-            Desafio Aux = new Desafio(puntajeDesafio);
-            Desafio desafioActual = (Desafio) habitacion.getDesafios().obtenerDato(Aux);
+            Desafio desafioActual = (Desafio) habitacion.getDesafios().obtenerInformacion(puntajeDesafio);
 
             if (desafioActual != null) {
 
@@ -639,7 +638,7 @@ public class SistemaEscapeHouse {
                     + eq.getPuntajeNecesario() + "\n";
 
             String habAct = eq.getHabitacionActual();
-            Habitacion ParadoEnhab = (Habitacion) this.habitaciones.obtenerDato(new Habitacion(habAct));
+            Habitacion ParadoEnhab = (Habitacion) this.habitaciones.obtenerInformacion(habAct);
 
             if (ParadoEnhab != null) {
                 if (ParadoEnhab.tieneSalida()) {

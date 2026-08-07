@@ -1,8 +1,8 @@
 package EscapeHouse;
 
-import estructuras.conjuntistas.ArbolAVL;
+import estructuras.conjuntistas.DiccionarioAVL;
 
-public class Habitacion implements Comparable {
+public class Habitacion {
     private String codigo;
     private String nombre;
     private int planta;
@@ -10,8 +10,8 @@ public class Habitacion implements Comparable {
     private boolean tieneSalida;
     private boolean esEntrada; // para saber si es de entrada por que "Para las
     // habitaciones solo se pueden agregar intermedias,
-    // las habitaciones de entrada y salida no cambian."?
-    private ArbolAVL desafios;
+    // las habitaciones de entrada y salida no cambian."
+    private DiccionarioAVL desafios;
 
     public Habitacion(String codigo, String nombre, int planta, double metrosCuadrados, boolean tieneSalida,
             boolean esEntrada) {
@@ -21,17 +21,7 @@ public class Habitacion implements Comparable {
         this.metrosCuadrados = metrosCuadrados;
         this.tieneSalida = tieneSalida;
         this.esEntrada = esEntrada;
-        this.desafios = new ArbolAVL();
-    }
-
-    public Habitacion(String codigo) {
-        this.codigo = codigo;
-        this.nombre = "";
-        this.planta = 0;
-        this.metrosCuadrados = 0;
-        this.tieneSalida = false;
-        this.esEntrada = false;
-        this.desafios = new ArbolAVL();
+        this.desafios = new DiccionarioAVL();
     }
 
     public String getCodigo() {
@@ -66,11 +56,11 @@ public class Habitacion implements Comparable {
         return tieneSalida;
     }
 
-    public ArbolAVL getDesafios() {
+    public DiccionarioAVL getDesafios() {
         return desafios;
     }
 
-    public void setDesafios(ArbolAVL desafios) {
+    public void setDesafios(DiccionarioAVL desafios) {
         this.desafios = desafios;
     }
 
@@ -80,10 +70,6 @@ public class Habitacion implements Comparable {
 
     public boolean esIntermedia() {
         return !this.esEntrada && !this.tieneSalida;
-    }
-
-    public int compareTo(Object o) {
-        return this.codigo.compareTo(((Habitacion) o).getCodigo());
     }
 
     @Override
@@ -97,7 +83,7 @@ public class Habitacion implements Comparable {
         s += "Entrada: " + this.esEntrada + "\n";
         s += "Salida: " + this.tieneSalida + "\n";
         s += "Desafíos:\n";
-        s += desafios.listar();
+        s += desafios.listarDatos();
 
         return s;
     }

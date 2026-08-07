@@ -1,6 +1,6 @@
 package EscapeHouse;
 
-public class Desafio implements Comparable {
+public class Desafio {
     private int puntaje;
     private String nombre;
     private String tipo;
@@ -9,12 +9,6 @@ public class Desafio implements Comparable {
         this.puntaje = puntaje;
         this.nombre = nombre;
         this.tipo = tipo;
-    }
-
-    public Desafio(int puntaje) {
-        this.puntaje = puntaje;
-        this.nombre = "";
-        this.tipo = "";
     }
 
     public int getPuntaje() {
@@ -35,10 +29,6 @@ public class Desafio implements Comparable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public int compareTo(Object o) {
-        return this.puntaje - ((Desafio) o).puntaje;
     }
 
     @Override
